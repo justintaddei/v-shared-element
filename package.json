@@ -1,0 +1,39 @@
+{
+  "name": "npm-ts-template",
+  "version": "0.0.0",
+  "description": "A template typescript-based npm packages",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "test": "exit 0",
+    "build": "tsc",
+    "dev": "tsc -w",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justintaddei/npm-ts-template.git"
+  },
+  "keywords": [],
+  "author": "Justin Taddei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justintaddei/npm-ts-template/issues"
+  },
+  "homepage": "https://github.com/justintaddei/npm-ts-template#readme",
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "tslint": "^6.0.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.8.3"
+  }
+}
