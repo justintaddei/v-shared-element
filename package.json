@@ -1,7 +1,7 @@
 {
-  "name": "npm-ts-template",
+  "name": "v-shared-element",
   "version": "0.0.0",
-  "description": "A template typescript-based npm packages",
+  "description": "Declarative shared-element transitions for Vue.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -21,19 +21,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justintaddei/npm-ts-template.git"
+    "url": "git+https://github.com/justintaddei/v-shared-element.git"
   },
-  "keywords": [],
+  "keywords": [
+    "vue",
+    "directive",
+    "page transition",
+    "shared",
+    "element",
+    "transition",
+    "nuxt"
+  ],
   "author": "Justin Taddei",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/justintaddei/npm-ts-template/issues"
+    "url": "https://github.com/justintaddei/v-shared-element/issues"
   },
-  "homepage": "https://github.com/justintaddei/npm-ts-template#readme",
+  "homepage": "https://github.com/justintaddei/v-shared-element#readme",
   "devDependencies": {
     "prettier": "^1.19.1",
     "tslint": "^6.0.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "vue": "^2.6.11"
   }
 }
