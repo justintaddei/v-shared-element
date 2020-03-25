@@ -75,6 +75,11 @@ const defaultOptions: ISharedElementOptions = {
   zIndex: 1000,
 };
 
+/**
+ * Vue.js plugin
+ * @example
+ * Vue.use(SharedElementDirective, options)
+ */
 export const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
   install(Vue, options) {
     Vue.directive('shared-element', {
@@ -119,6 +124,11 @@ export const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>
   },
 };
 
+/**
+ * Vue.js route guard
+ * @example
+ * router.beforeEach(SharedElementRouteGuard)
+ */
 export const SharedElementRouteGuard = (to, from, next: () => void) => {
   // We'll use a try-catch here just in case.
   // If `next()` isn't called then our app will look frozen.
@@ -144,4 +154,16 @@ export const SharedElementRouteGuard = (to, from, next: () => void) => {
 
   // Move on to the next middleware
   next();
+};
+
+/**
+ * Nuxt.js plugin
+ * @example
+ * export default NuxtSharedElementRouteGuard
+ */
+export const NuxtSharedElementRouteGuard = (context: any) => {
+  const { router } = context.app;
+
+  // Listen for the route to change
+  router.beforeEach(SharedElementRouteGuard);
 };
