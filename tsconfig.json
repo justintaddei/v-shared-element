@@ -4,6 +4,7 @@
     "module": "es2015",
     "lib": ["DOM", "es2015"],
     "removeComments": true,
+    "moduleResolution": "node",
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
