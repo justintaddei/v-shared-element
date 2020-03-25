@@ -15,7 +15,7 @@ export interface ISharedElementOptions {
    * `reveal` starts with **both** elements at **full opacity** then fades
    *  out the old element to reveal the new one underneath.
    *
-   * `auto` will use `"cross-fade"` when `compositeOnly = true` or `"reveal"` otherwise.
+   * `auto` will use `"cross-fade"` when `compositeOnly = true || the old element's opacity !== 1` and `"reveal"` otherwise.
    *
    *  @default 'auto'
    */
