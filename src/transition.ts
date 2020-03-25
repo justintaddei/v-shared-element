@@ -1,7 +1,13 @@
 import { duplicateNode, transformFromOffset } from './dom-helpers';
 import { ICachedSharedElement } from './index';
 
+/**
+ * Transitions one DOM element to another
+ */
 export function transition(cachedElement: ICachedSharedElement, activeElement: HTMLElement) {
+  // The original value of the `style` attrbute.
+  // Used to reset the attribute to it's original state after
+  // we alter it to apply the transition
   const activeElementOriginalStyleAttribute = activeElement.getAttribute('style');
 
   const activeElementClone = duplicateNode(activeElement);
@@ -11,7 +17,13 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   const cachedElementBorderRadius = cachedElement.clonedNode.style.borderRadius;
   const activeElementBorderRadius = activeElementClone.style.borderRadius;
 
+  /**
+   * CSS transform used to put the cached element over the active element
+   */
   const cachedElementTransform = transformFromOffset(activeElementBoundingRect, cachedElement.boundingRect);
+  /**
+   * CSS transform used position the activeElement in the same place as the cached element
+   */
   const activeElementTransform = transformFromOffset(cachedElement.boundingRect, activeElementBoundingRect);
 
   // Now we can hide the "real" element on the old route
@@ -39,11 +51,16 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   activeElement.style.animation = 'none';
   activeElement.style.opacity = '0';
 
+  // The css transition is calculated each time so that it can be changed
+  // by options passed to `v-shared-element`
   let cssTransition = `transform ${cachedElement.options.duration} ${cachedElement.options.easing}, opacity ${cachedElement.options.duration} linear`;
 
+  // If we aren't limiting the transition to `transform`
+  // and `opacity` then we'll add a transition for border-radius as well
   if (!cachedElement.options.compositeOnly)
     cssTransition = `${cssTransition}, border-radius ${cachedElement.options.duration} ${cachedElement.options.easing}`;
 
+  // Figure out if we need to cross-fade the elements or "reveal" the active element
   if (
     cachedElement.options.type === 'cross-fade' ||
     (cachedElement.options.type === 'auto' && cachedElement.options.compositeOnly)
@@ -53,6 +70,8 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
 
   // Move the active element clone to the starting position
   activeElementClone.style.transform = activeElementTransform;
+
+  // Change the border-radius if necessary
   if (!cachedElement.options.compositeOnly) activeElementClone.style.borderRadius = cachedElementBorderRadius;
 
   // Now we need to actually add the clones to the document
@@ -62,26 +81,35 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   // Flush css changes
   activeElement.offsetHeight;
 
+  // Set the transitions on the elements
   cachedElement.clonedNode.style.transition = cssTransition;
   activeElementClone.style.transition = cssTransition;
 
+  // Make them move
   cachedElement.clonedNode.style.transform = cachedElementTransform;
   activeElementClone.style.transform = 'none';
 
+  // Cross-fade or "reveal" them
   cachedElement.clonedNode.style.opacity = '0';
   activeElementClone.style.opacity = '';
 
+  // If necessary, also change the border-radius so it animates
   if (!cachedElement.options.compositeOnly) {
     cachedElement.clonedNode.style.borderRadius = activeElementBorderRadius;
     activeElementClone.style.borderRadius = activeElementBorderRadius;
   }
 
+  // Wait for the animations to finish
   activeElementClone.addEventListener('transitionend', (e) => {
+    // Make sure they stopped moving
     if (e.propertyName !== 'transform') return;
 
+    // Reset the style attribute of the active element if necessary
     if (activeElementOriginalStyleAttribute) activeElement.setAttribute('style', activeElementOriginalStyleAttribute);
+    // Or just remove it if it wasn't there to begin with
     else activeElement.removeAttribute('style');
 
+    // Remove the duplicate nodes
     cachedElement.clonedNode.remove();
     activeElementClone.remove();
   });

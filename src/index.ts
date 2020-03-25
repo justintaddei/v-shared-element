@@ -51,6 +51,9 @@ interface ISharedElementCandidate {
   options: ISharedElementOptions;
 }
 
+/**
+ * A cached shared element from the previous route
+ */
 export interface ICachedSharedElement {
   clonedNode: HTMLElement;
   actualNode: HTMLElement;
