@@ -92,7 +92,7 @@ export const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>
 
         if (!id)
           throw new Error(
-            `No shared-element ID for ${activeElement.tagName}. Usage: https://github.com/justintaddei/v-shared-element#readme`,
+            `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`,
           );
 
         // Add this element to the candidates list

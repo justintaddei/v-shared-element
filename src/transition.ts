@@ -16,6 +16,7 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
 
   const cachedElementBorderRadius = cachedElement.clonedNode.style.borderRadius;
   const activeElementBorderRadius = activeElementClone.style.borderRadius;
+  const cachedElementOpacity = cachedElement.clonedNode.style.opacity;
   const activeElementOpacity = activeElementClone.style.opacity;
 
   /**
@@ -64,7 +65,7 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   // Figure out if we need to cross-fade the elements or "reveal" the active element
   if (
     cachedElement.options.type === 'cross-fade' ||
-    (cachedElement.options.type === 'auto' && (cachedElement.options.compositeOnly || activeElementOpacity === '1'))
+    (cachedElement.options.type === 'auto' && (cachedElement.options.compositeOnly || cachedElementOpacity !== '1'))
   ) {
     activeElementClone.style.opacity = '0';
   }
