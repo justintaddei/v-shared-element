@@ -33,7 +33,7 @@ function copyStyles(node: HTMLElement, targetNode: HTMLElement) {
  * Creates a duplicate of `node` using a
  * combination of `cloneNode` and `getComputedStyles`
  */
-export function duplicateNode(node: HTMLElement) {
+export function duplicateNode(node: HTMLElement, id: string) {
   const clone = node.cloneNode() as HTMLElement;
 
   // Remove all data-* attributes
@@ -59,16 +59,27 @@ export function duplicateNode(node: HTMLElement) {
   // position it directly over the original element
   clone.style.position = 'fixed';
 
+  clone.dataset.sharedElement = id;
+
   return clone;
 }
 
 /**
- * Calculate the difference in position/scale between two elements
+ * Calculates the difference in position/scale between
+ * two elements and returns a css transform string to
+ * position `from` over `to`
  */
-export function transformFromOffset(from: DOMRect, to: DOMRect) {
-  return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${
-    from.height / to.height
+export function offsetTransform(to: DOMRect, from: DOMRect) {
+  return `translate(${to.left - from.left}px, ${to.top - from.top}px) scale(${to.width / from.width}, ${
+    to.height / from.height
   })`;
+}
+
+/**
+ * Removes shared-element clones for the given `id`
+ */
+export function removePreexistingClones(id: string) {
+  document.querySelectorAll(`[data-shared-element=${id}]`).forEach((el) => el.remove());
 }
 
 // Element.remove polyfill

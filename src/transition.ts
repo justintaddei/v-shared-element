@@ -1,4 +1,4 @@
-import { duplicateNode, transformFromOffset } from './dom-helpers';
+import { duplicateNode, offsetTransform } from './dom-helpers';
 import { ICachedSharedElement } from './index';
 
 /**
@@ -10,7 +10,7 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   // we alter it to apply the transition
   const activeElementOriginalStyleAttribute = activeElement.getAttribute('style');
 
-  const activeElementClone = duplicateNode(activeElement);
+  const activeElementClone = duplicateNode(activeElement, cachedElement.id);
 
   const activeElementBoundingRect = activeElement.getBoundingClientRect();
 
@@ -20,11 +20,11 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   /**
    * CSS transform used to put the cached element over the active element
    */
-  const cachedElementTransform = transformFromOffset(activeElementBoundingRect, cachedElement.boundingRect);
+  const cachedElementTransform = offsetTransform(activeElementBoundingRect, cachedElement.boundingRect);
   /**
    * CSS transform used position the activeElement in the same place as the cached element
    */
-  const activeElementTransform = transformFromOffset(cachedElement.boundingRect, activeElementBoundingRect);
+  const activeElementTransform = offsetTransform(cachedElement.boundingRect, activeElementBoundingRect);
 
   // Now we can hide the "real" element on the old route
   // which is important if the route has a transition of its own

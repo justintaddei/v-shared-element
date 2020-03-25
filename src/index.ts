@@ -1,5 +1,5 @@
 import { PluginObject } from 'vue/types/plugin';
-import { duplicateNode } from './dom-helpers';
+import { duplicateNode, removePreexistingClones } from './dom-helpers';
 import { transition } from './transition';
 
 /**
@@ -55,6 +55,7 @@ interface ISharedElementCandidate {
  * A cached shared element from the previous route
  */
 export interface ICachedSharedElement {
+  id: string;
   clonedNode: HTMLElement;
   actualNode: HTMLElement;
   boundingRect: DOMRect;
@@ -141,9 +142,13 @@ export const SharedElementRouteGuard = (to, from, next: () => void) => {
 
     // Let's loop over all the candidates and create a record of them
     sharedElementCandidates.forEach((candidate, id) => {
+      // Cancel any current animation for the same shared element.
+      // This protects against people spamming links/buttons
+      removePreexistingClones(id);
       sharedElementCache.set(id, {
+        id,
         actualNode: candidate.element,
-        clonedNode: duplicateNode(candidate.element),
+        clonedNode: duplicateNode(candidate.element, id),
         boundingRect: candidate.element.getBoundingClientRect(),
         options: candidate.options,
       });
