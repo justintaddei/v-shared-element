@@ -31,6 +31,13 @@ export interface ISharedElementOptions {
    */
   duration: string;
   /**
+   * CSS duration that controls the
+   * the "fade-out" stage of the animation
+   * to blend the cloned node with the real one.
+   * Set to `"0s"` to disable
+   */
+  endDuration: string;
+  /**
    * Setting to `true` will limit animations to `transform` and `opacity` only
    * @default true
    */
@@ -75,6 +82,7 @@ const defaultOptions: ISharedElementOptions = {
   type: 'auto',
   easing: 'ease',
   duration: '300ms',
+  endDuration: '75ms',
   compositeOnly: false,
   zIndex: 1000,
 };

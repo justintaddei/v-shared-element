@@ -113,6 +113,19 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
 
     // Remove the duplicate nodes
     cachedElement.clonedNode.remove();
-    activeElementClone.remove();
+    fadeOut(activeElementClone, cachedElement.options.endDuration);
+  });
+}
+
+function fadeOut(el: HTMLElement, duration: string) {
+  if (!duration || parseInt(duration) === 0) {
+    el.remove();
+    return;
+  }
+
+  el.style.transition = `opacity ${duration} linear`;
+  el.style.opacity = '0';
+  el.addEventListener('transitionend', (e) => {
+    if (e.propertyName === 'opacity') el.remove();
   });
 }
