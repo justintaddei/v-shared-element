@@ -128,7 +128,7 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
 }
 
 function fadeOut(el: HTMLElement, duration: string) {
-  if (!duration || parseInt(duration) === 0) {
+  if (!duration || parseInt(duration, 10) === 0) {
     el.remove();
     return;
   }
