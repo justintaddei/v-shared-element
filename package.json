@@ -1,6 +1,6 @@
 {
   "name": "v-shared-element",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Declarative shared-element transitions for Vue.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
