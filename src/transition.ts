@@ -12,21 +12,10 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
 
   const activeElementClone = duplicateNode(activeElement, cachedElement.id);
 
-  const activeElementBoundingRect = activeElement.getBoundingClientRect();
-
   const cachedElementBorderRadius = cachedElement.clonedNode.style.borderRadius;
   const activeElementBorderRadius = activeElementClone.style.borderRadius;
   const cachedElementOpacity = cachedElement.clonedNode.style.opacity;
   const activeElementOpacity = activeElementClone.style.opacity;
-
-  /**
-   * CSS transform used to put the cached element over the active element
-   */
-  const cachedElementTransform = offsetTransform(activeElementBoundingRect, cachedElement.boundingRect);
-  /**
-   * CSS transform used position the activeElement in the same place as the cached element
-   */
-  const activeElementTransform = offsetTransform(cachedElement.boundingRect, activeElementBoundingRect);
 
   // Now we can hide the "real" element on the old route
   // which is important if the route has a transition of its own
@@ -41,8 +30,6 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   cachedElement.clonedNode.style.top = `${cachedElement.boundingRect.top}px`;
   cachedElement.clonedNode.style.zIndex = `${cachedElement.options.zIndex}`;
 
-  activeElementClone.style.left = `${activeElementBoundingRect.left}px`;
-  activeElementClone.style.top = `${activeElementBoundingRect.top}px`;
   // The active element's z-index to 1 less
   // than that of the cachedElement so it appears below it
   activeElementClone.style.zIndex = `${cachedElement.options.zIndex}`;
@@ -70,9 +57,6 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
     activeElementClone.style.opacity = '0';
   }
 
-  // Move the active element clone to the starting position
-  activeElementClone.style.transform = activeElementTransform;
-
   // Change the border-radius if necessary
   if (!cachedElement.options.compositeOnly) activeElementClone.style.borderRadius = cachedElementBorderRadius;
 
@@ -80,40 +64,66 @@ export function transition(cachedElement: ICachedSharedElement, activeElement: H
   document.body.appendChild(activeElementClone);
   document.body.appendChild(cachedElement.clonedNode);
 
-  // Flush css changes
-  activeElement.offsetHeight;
+  // With out requestAnimationFrame delaying the rest of the code
+  // it's possible for activeElement.getBoundingClientRect() to return
+  // an invalid value due to the scroll position changing between pages.
+  // This is especially the case on mobile Chome. If you scroll down the page
+  // and then back up just a little bit, the address bar is shown. If you
+  // then navigate to another page that has a shared element, the transition will
+  // appear to jump at the very end because the `top` value was wrong. Waiting for another frame
+  // to be painted seems to fix this problem without any drawbacks.
+  requestAnimationFrame(() => {
+    const activeElementBoundingRect = activeElement.getBoundingClientRect();
+    activeElementClone.style.left = `${activeElementBoundingRect.left}px`;
+    activeElementClone.style.top = `${activeElementBoundingRect.top}px`;
 
-  // Set the transitions on the elements
-  cachedElement.clonedNode.style.transition = cssTransition;
-  activeElementClone.style.transition = cssTransition;
+    /**
+     * CSS transform used to put the cached element over the active element
+     */
+    const cachedElementTransform = offsetTransform(activeElementBoundingRect, cachedElement.boundingRect);
+    /**
+     * CSS transform used position the activeElement in the same place as the cached element
+     */
+    const activeElementTransform = offsetTransform(cachedElement.boundingRect, activeElementBoundingRect);
 
-  // Make them move
-  cachedElement.clonedNode.style.transform = cachedElementTransform;
-  activeElementClone.style.transform = 'none';
+    // Move the active element clone to the starting position
+    activeElementClone.style.transform = activeElementTransform;
 
-  // Cross-fade or "reveal" them
-  cachedElement.clonedNode.style.opacity = '0';
-  activeElementClone.style.opacity = activeElementOpacity;
+    // Flush css changes
+    activeElement.offsetHeight;
 
-  // If necessary, also change the border-radius so it animates
-  if (!cachedElement.options.compositeOnly) {
-    cachedElement.clonedNode.style.borderRadius = activeElementBorderRadius;
-    activeElementClone.style.borderRadius = activeElementBorderRadius;
-  }
+    // Set the transitions on the elements
+    cachedElement.clonedNode.style.transition = cssTransition;
+    activeElementClone.style.transition = cssTransition;
 
-  // Wait for the animations to finish
-  activeElementClone.addEventListener('transitionend', (e) => {
-    // Make sure they stopped moving
-    if (e.propertyName !== 'transform') return;
+    // Make them move
+    cachedElement.clonedNode.style.transform = cachedElementTransform;
+    activeElementClone.style.transform = 'none';
 
-    // Reset the style attribute of the active element if necessary
-    if (activeElementOriginalStyleAttribute) activeElement.setAttribute('style', activeElementOriginalStyleAttribute);
-    // Or just remove it if it wasn't there to begin with
-    else activeElement.removeAttribute('style');
+    // Cross-fade or "reveal" them
+    cachedElement.clonedNode.style.opacity = '0';
+    activeElementClone.style.opacity = activeElementOpacity;
 
-    // Remove the duplicate nodes
-    cachedElement.clonedNode.remove();
-    fadeOut(activeElementClone, cachedElement.options.endDuration);
+    // If necessary, also change the border-radius so it animates
+    if (!cachedElement.options.compositeOnly) {
+      cachedElement.clonedNode.style.borderRadius = activeElementBorderRadius;
+      activeElementClone.style.borderRadius = activeElementBorderRadius;
+    }
+
+    // Wait for the animations to finish
+    activeElementClone.addEventListener('transitionend', (e) => {
+      // Make sure they stopped moving
+      if (e.propertyName !== 'transform') return;
+
+      // Reset the style attribute of the active element if necessary
+      if (activeElementOriginalStyleAttribute) activeElement.setAttribute('style', activeElementOriginalStyleAttribute);
+      // Or just remove it if it wasn't there to begin with
+      else activeElement.removeAttribute('style');
+
+      // Remove the duplicate nodes
+      cachedElement.clonedNode.remove();
+      fadeOut(activeElementClone, cachedElement.options.endDuration);
+    });
   });
 }
 
