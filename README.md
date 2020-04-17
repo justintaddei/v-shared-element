@@ -39,7 +39,7 @@ router.beforeEach(SharedElementRouteGuard)
 
 ### Nuxt.js
 
-Create a file in `~/plugins` named `v-shared-element.js`
+Create a file in `~/plugins` named `v-shared-element.client.js`
 
 ```js
 import Vue from 'vue';
@@ -54,7 +54,7 @@ Then in your `nuxt.config.js`
 
 ```js
 export default {
-  plugins: ['~/plugins/v-shared-element.client.ts', '~/plugins/highlight.ts'],
+  plugins: ['~/plugins/v-shared-element.client.ts'],
 };
 ```
 
