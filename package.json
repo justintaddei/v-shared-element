@@ -2,15 +2,17 @@
   "name": "v-shared-element",
   "version": "1.0.3",
   "description": "Declarative shared-element transitions for Vue.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "unpkg": "dist/iife/index.js",
+  "types": "dist/types/",
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "test": "exit 0",
-    "build": "tsc",
-    "dev": "tsc -w",
+    "test": "jest --no-cache",
+    "build": "rollup --config",
+    "dev": "npm run build -- --watch",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
@@ -39,10 +41,20 @@
   },
   "homepage": "https://github.com/justintaddei/v-shared-element#readme",
   "devDependencies": {
-    "prettier": "^2.0.2",
-    "tslint": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "prettier": "^2.0.5",
+    "rollup": "^2.7.6",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3",
     "vue": "^2.6.11"
+  },
+  "dependencies": {
+    "@types/jest": "^25.2.1",
+    "illusory": "^1.2.0",
+    "jest": "^26.0.0",
+    "ts-jest": "^25.4.0"
   }
 }
