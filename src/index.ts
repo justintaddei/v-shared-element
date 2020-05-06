@@ -25,8 +25,8 @@ const sharedElementCache = new Map<string, ICachedSharedElement>()
 const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
   install(Vue, options) {
     Vue.prototype.$illusory = illusory
-    Vue.prototype.$createIllusoryElement = (el: HTMLElement | SVGElement, options: IOptions) =>
-      new IllusoryElement(el, options)
+    Vue.prototype.$createIllusoryElement = (el: HTMLElement | SVGElement, opts: IOptions) =>
+      new IllusoryElement(el, opts)
 
     Vue.directive('shared-element', {
       async inserted(activeElement, binding, vnode) {
