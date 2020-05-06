@@ -7,13 +7,6 @@ import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { $emit } from './utils/emit'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $illusory: typeof illusory
-    $createIllusoryElement: IllusoryElement
-  }
-}
-
 /**
  * Map of all elements on the current page that
  * are tagged with v-shared-element
