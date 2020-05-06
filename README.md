@@ -5,18 +5,24 @@
 ![](https://img.shields.io/npm/dt/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/l/v-shared-element.svg?style=flat)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
-![](https://img.shields.io/github/languages/top/justintaddei/v-shared-element.svg?colorB=blue&style=flat)
+![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
-Declarative shared-element transitions for Vue.js  
-[Example](https://justintaddei.github.io/v-shared-element/)
+Declarative shared-element transitions between pages for Vue.js and Nuxt.js  
+Uses [illusory](https://npmjs.com/package/illusory) under the hood. 
+
+**[Example](https://justintaddei.github.io/v-shared-element/)**
 
 ## Install
 
 ```sh
 $ npm install v-shared-element
 ```
-
+**or**
+```html
+<script src="http://unpkg.com/illusory">
+<script src="http://unpkg.com/v-shared-element">
+```
 ## Register the plugin
 
 ### Vue.js + vue-router
@@ -75,12 +81,12 @@ Add `v-shared-element` to the element you want to transition on each page.
 ```html
 <div
   v-shared-element:profile="{
-        type: 'auto',
         easing: 'ease',
         duration: '300ms',
-        endDuration: '100ms',
+        endDuration: '150ms',
+        zIndex: 1,
         compositeOnly: false,
-        zIndex: 1000
+        includeChildren: false,
       }"
 ></div>
 ```
@@ -89,31 +95,41 @@ Add `v-shared-element` to the element you want to transition on each page.
 
 ```js
 Vue.use(SharedElementDirective, {
-  type: 'auto',
   easing: 'ease',
   duration: '300ms',
-  endDuration: '100ms',
+  endDuration: '150ms',
+  zIndex: 1,
   compositeOnly: false,
-  zIndex: 1000,
+  includeChildren: false,
 });
 ```
 
+## Option hierarchy
+
+If options are specified on a per-element bases, the options specified on the page you are navigating *away from* will take precedence over those (if any) that are specified on the page you're navigating *to*. The only exception is `includeChildren` as it will be applied to each element individually.
+
 ## Options
 
-- type: `'cross-fade' | 'reveal' | 'auto'`
-  - `cross-fade` will fade out the old element and at the same time will fade the new one in underneath.
-  - `reveal` starts with both elements at full opacity then fades out the old element to reveal the new one underneath.
-  - `auto` will use "cross-fade" when compositeOnly = true || the old element's opacity !== 1 and "reveal" otherwise.
+- `includeChildren`: `boolean`  
+  - default: `false`  
+  **Note:** Applies to each element individually.   
+  When true, all `ChildNode`'s of the element are included in the animation.
 - easing: `string`
-  - Sets the easing fuction of the transition. This can be any value that is accepted by the CSS `transition-timing-function` property.
+  - default: `'ease'`  
+  Sets the easing fuction of the transition. This can be any value that is accepted by the CSS `transition-timing-function` property.
 - duration: `string`
-  - Sets the duration of the transition. This can be any value that is accepted by the CSS `transition-duration` property.
+  - default: `'300ms'`  
+  Sets the duration of the transition. This can be any value that is accepted by the CSS `transition-duration` property.
 - endDuration: `string`
-  - When the transition is finished, the contents of the shared-element will take this long to fade in. This can be any value that is accepted by the CSS `transition-duration` property. Set this to `"0s"` to disable it (the contents of the shared element will render as soon as the transition finishes).
+  - default: `'150ms'`  
+  **Note:** has no effect if `includeChildren` is `true`.  
+  When the transition is finished, the shared-element will take this long to fade out (making it seem as though its contents fade in). This can be any value that is accepted by the CSS `transition-duration` property. Set this to `"0s"` to disable it (the contents of the shared element will render as soon as the transition finishes).
 - compositeOnly: `boolean`
-  - By default, a shared-element transition consists of `transform` `opacity` and `border-radius`. Setting this to `true` will limit the transition to `transform` and `opacity` only.
+  - default: `false`  
+  By default, a shared-element transition consists of `transform` `opacity` and `border-radius`. Setting this to `true` will limit the transition to `transform` and `opacity` only.
 - zIndex: `number`
-  - The z-index used for the shared-elements during the transition.
+  - default: `1`  
+  The z-index used for the shared-elements during the transition.
 
 # Caveats
 

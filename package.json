@@ -1,7 +1,7 @@
 {
   "name": "v-shared-element",
   "version": "1.0.3",
-  "description": "Declarative shared-element transitions for Vue.js",
+  "description": "Declarative shared-element transitions between pages for Vue.js and Nuxt.js",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "unpkg": "dist/iife/index.js",
@@ -31,8 +31,10 @@
     "page transition",
     "shared",
     "element",
+    "shared element",
     "transition",
-    "nuxt"
+    "nuxt",
+    "illusory"
   ],
   "author": "Justin Taddei",
   "license": "MIT",
