@@ -1,5 +1,5 @@
 import { illusory, IllusoryElement } from 'illusory'
-import { IOptions } from 'illusory/dist/types/options'
+import { IOptions } from 'illusory/types/options'
 import { PluginObject } from 'vue/types/plugin'
 import { DEFAULT_OPTIONS, ISharedElementOptions } from './options'
 import { createRouteGuard } from './routeGuard'
