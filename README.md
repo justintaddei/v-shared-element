@@ -64,6 +64,23 @@ export default {
 };
 ```
 
+### TypeScript
+If you use TypeScript, create a `vue.d.ts` file and paste in the following:
+```ts
+import { illusory, IllusoryElement } from 'illusory/types'
+import { IOptions } from 'illusory/types/options'
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $illusory: typeof illusory
+    $createIllusoryElement: (
+      el: HTMLElement | SVGElement,
+      opts?: Partial<IOptions>
+    ) => IllusoryElement
+  }
+}
+```
+
 ## Usage
 
 Add `v-shared-element` to the element you want to transition on each page.
@@ -130,6 +147,34 @@ If options are specified on a per-element bases, the options specified on the pa
 - zIndex: `number`
   - default: `1`  
   The z-index used for the shared-elements during the transition.
+
+# illusory
+
+`v-shared-element` uses [illusory](https://npmjs.com/package/illusory) under the hood to morph between elements and is made available on the Vue instance. For documention on how to use it, [click here](https://npmjs.com/package/illusory).
+
+illusory is exposed as **`Vue.prototype.$illusory`** and **`Vue.prototype.$createIllusoryElement`**
+
+For example:
+```html
+<template>
+  <div>
+    <div ref="from"></div>
+    <div ref="to"></div>
+    <button @click="morph">Morph!</button>
+  </div>
+</template>
+
+<script>
+  export default {
+    methods: {
+      morph() {
+        this.$illusory(this.$refs.from, this.$refs.to)
+      }
+    }
+  }
+</script>
+```
+
 
 # Caveats
 
