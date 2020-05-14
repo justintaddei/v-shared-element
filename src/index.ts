@@ -86,6 +86,8 @@ const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
             to.setStyle('top', `${to.rect.top}px`)
             to._to(from)
 
+            await new Promise((r) => requestAnimationFrame(r))
+
             $emit(vnode, 'shared-element-begin', id)
           },
           beforeDetach(from, to) {
