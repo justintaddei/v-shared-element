@@ -11,7 +11,8 @@
 Declarative shared-element transitions between pages for Vue.js and Nuxt.js  
 Uses [illusory](https://npmjs.com/package/illusory) under the hood. 
 
-**[Example](https://justintaddei.github.io/v-shared-element/)**
+**[Example](https://justintaddei.github.io/v-shared-element/)**  
+_Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
 
 ## Install
 
