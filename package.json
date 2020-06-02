@@ -58,6 +58,6 @@
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
-    "illusory": "^1.2.1"
+    "illusory": "^1.2.2"
   }
 }
