@@ -24,6 +24,7 @@ export function createRouteGuard(
         element: new IllusoryElement(candidate.element, {
           includeChildren: candidate.options.includeChildren,
           zIndex: candidate.options.zIndex,
+          ignoreTransparency: candidate.options.ignoreTransparency,
           processClone(node, depth) {
             if (
               depth > 0 &&

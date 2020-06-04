@@ -8,5 +8,6 @@ test('Has correct default options', () => {
     zIndex: 1,
     compositeOnly: false,
     includeChildren: false,
+    ignoreTransparency: ['img'],
   })
 })
