@@ -61,6 +61,7 @@ const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
           duration: cachedElement.options.duration,
           zIndex: cachedElement.options.zIndex,
           easing: cachedElement.options.easing,
+          ignoreTransparency: cachedElement.options.ignoreTransparency,
           processClone(node, depth) {
             // Hide any nested shared elements if they're currently animating
             // because otherwise they'll show up in the clone and in their

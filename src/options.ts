@@ -35,6 +35,15 @@ export interface ISharedElementOptions {
    * @default false
    */
   includeChildren: boolean
+  /**
+   * If `false` and the element we're transitioning **to** has a transparent background then
+   * the element we're transitioning from will fade out.
+   * If `true` the transparency of the element's background will be ignored.
+   *
+   * This can also be an array of tag names that should be ignored (e.g. `['img', 'button']`).
+   * @default ['img']
+   */
+  ignoreTransparency: boolean | string[]
 }
 
 export const DEFAULT_OPTIONS: ISharedElementOptions = {
@@ -44,4 +53,5 @@ export const DEFAULT_OPTIONS: ISharedElementOptions = {
   zIndex: 1,
   compositeOnly: false,
   includeChildren: false,
+  ignoreTransparency: ['img'],
 }
