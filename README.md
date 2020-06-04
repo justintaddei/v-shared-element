@@ -1,4 +1,4 @@
-# v-shared-element
+# v-shared-element <!-- omit in toc -->
 
 ![](https://img.shields.io/github/issues-raw/justintaddei/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/v/v-shared-element.svg?style=flat)
@@ -181,6 +181,6 @@ For example:
 ```
 
 
-# Caveats
+# Common recipes
 
-Any CSS `transform` applied to a shared-element other than `translate` (e.g. `rotate`) will break the transition.
+**See [RECIPES.md](https://github.com/justintaddei/v-shared-element/tree/master/RECIPES.md)** for common recipes for things the plugin doesn't handle by default.
