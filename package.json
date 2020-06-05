@@ -58,6 +58,6 @@
     "vue": "^2.6.11"
   },
   "dependencies": {
-    "illusory": "^1.4.0"
+    "illusory": "^1.4.1"
   }
 }
