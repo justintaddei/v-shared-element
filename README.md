@@ -148,10 +148,13 @@ If options are specified on a per-element bases, the options specified on the pa
 - ignoreTransparency:	`boolean | string[]`
   - default: `['img']`  
   If `false`, and the element we're transitioning **to** has a `transparent` background then the element we're transitioning from will fade out. If `true`, the transparency of the element's background will be ignored. This can also be an array of tag names that should be ignored (e.g. `['img', 'button']`). 
-    > If you're seeing a "flash" half way through the transition, try setting this to `false`.
+    > If you're seeing a "flash" half way through the transition, try setting this to `true`.
 - zIndex: `number`
   - default: `1`  
   The z-index used for the shared-elements during the transition.
+- restrictToViewport: `boolean`
+  - default: `false`  
+  Setting this to `true` will disable any shared-elements on the current page **unless** they are in the viewport.
 
 ## A note about `keep-alive` routes
 
