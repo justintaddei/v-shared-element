@@ -44,6 +44,13 @@ export interface ISharedElementOptions {
    * @default ['img']
    */
   ignoreTransparency: boolean | string[]
+
+  /**
+   * Setting this to `true` will disable any shared-elements on the
+   * current page **unless** they are in the viewport.
+   * @default false
+   */
+  restrictToViewport: boolean
 }
 
 export const DEFAULT_OPTIONS: ISharedElementOptions = {
@@ -54,4 +61,5 @@ export const DEFAULT_OPTIONS: ISharedElementOptions = {
   compositeOnly: false,
   includeChildren: false,
   ignoreTransparency: ['img'],
+  restrictToViewport: false,
 }
