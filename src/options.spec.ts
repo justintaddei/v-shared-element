@@ -9,5 +9,6 @@ test('Has correct default options', () => {
     compositeOnly: false,
     includeChildren: false,
     ignoreTransparency: ['img'],
+    restrictToViewport: false,
   })
 })

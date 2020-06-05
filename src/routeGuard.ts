@@ -1,6 +1,7 @@
 import { IllusoryElement } from 'illusory'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
+import { withinViewport } from './utils/withinViewport'
 
 export function createRouteGuard(
   sharedElementCandidates: Map<string, ISharedElementCandidate>,
@@ -19,22 +20,26 @@ export function createRouteGuard(
 
     // Let's loop over all the candidates and create a record of them
     sharedElementCandidates.forEach((candidate, id) => {
+      const element = new IllusoryElement(candidate.element, {
+        includeChildren: candidate.options.includeChildren,
+        zIndex: candidate.options.zIndex,
+        ignoreTransparency: candidate.options.ignoreTransparency,
+        processClone(node, depth) {
+          if (
+            depth > 0 &&
+            (node instanceof HTMLElement || node instanceof SVGElement) &&
+            node.dataset.illusoryId &&
+            sharedElementCache.has(node.dataset.illusoryId)
+          )
+            subSharedElements.push(node)
+        },
+      })
+
+      if (candidate.options.restrictToViewport && !withinViewport(element)) return
+
       sharedElementCache.set(id, {
         id,
-        element: new IllusoryElement(candidate.element, {
-          includeChildren: candidate.options.includeChildren,
-          zIndex: candidate.options.zIndex,
-          ignoreTransparency: candidate.options.ignoreTransparency,
-          processClone(node, depth) {
-            if (
-              depth > 0 &&
-              (node instanceof HTMLElement || node instanceof SVGElement) &&
-              node.dataset.illusoryId &&
-              sharedElementCache.has(node.dataset.illusoryId)
-            )
-              subSharedElements.push(node)
-          },
-        }),
+        element,
         options: candidate.options,
       })
     })
