@@ -153,6 +153,11 @@ If options are specified on a per-element bases, the options specified on the pa
   - default: `1`  
   The z-index used for the shared-elements during the transition.
 
+## A note about `keep-alive` routes
+
+If your app has `keep-alive` routes that contain shared-elements, they will need a little extra to make them work.  
+See [`keep-alive` routes](https://github.com/justintaddei/v-shared-element/blob/master/RECIPES.md#routes-with-keep-alive) in [`RECIPES.md`](https://github.com/justintaddei/v-shared-element/blob/master/RECIPES.md) for more details.
+
 # illusory
 
 `v-shared-element` uses [illusory](https://npmjs.com/package/illusory) under the hood to morph between elements and is made available on the Vue instance. For documention on how to use it, [click here](https://npmjs.com/package/illusory).
