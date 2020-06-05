@@ -1,8 +1,9 @@
-import Vue from 'vue'
+import { ThisTypedComponentOptionsWithArrayProps } from 'vue/types/options'
+import { Vue } from 'vue/types/vue'
 
 type TriggerFunction = () => void
 
-export const sharedElementMixin = Vue.extend({
+export const sharedElementMixin = {
   data() {
     return {
       $_vSharedElement_triggers: [] as TriggerFunction[],
@@ -19,4 +20,4 @@ export const sharedElementMixin = Vue.extend({
 
     this.$data.$_vSharedElement_triggers.forEach((trigger) => trigger())
   },
-})
+} as ThisTypedComponentOptionsWithArrayProps<Vue, unknown, unknown, unknown, never>
