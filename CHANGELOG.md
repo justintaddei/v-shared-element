@@ -1,6 +1,6 @@
 # Changelog
 
-### 2.1.0 (June 5th, 2020)
+### 2.1.0 **(UNRELEASED)**
 
 **Features**
 - Added `ignoreTransparency` option (see [#4](https://github.com/justintaddei/v-shared-element/issues/4) for why)
