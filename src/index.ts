@@ -136,3 +136,10 @@ const { NuxtSharedElementRouteGuard, SharedElementRouteGuard } = createRouteGuar
 )
 
 export { SharedElementDirective, SharedElementRouteGuard, NuxtSharedElementRouteGuard, sharedElementMixin }
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $illusory: typeof illusory
+    $createIllusoryElement: (el: HTMLElement | SVGElement, opts?: Partial<IOptions>) => IllusoryElement
+  }
+}
