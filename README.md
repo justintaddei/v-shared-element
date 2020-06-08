@@ -510,6 +510,7 @@ $ npm run dev
 You should now have the example page running on `localhost`.  
 Hot reload will be triggered by changes made to `v-shared-element`.
 
+> See [CONTRIBUTING.md](https://github.com/justintaddei/v-shared-element/blob/master/CONTRIBUTING.md) for info.
 
 ## License
 
