@@ -245,16 +245,16 @@ Vue.use(SharedElementDirective, {
 
 ### Summary
 
-| option             | type             | default   |
-| ------------------ | ---------------- | --------- |
-| easing             | `string`         | `"ease"`  |
-| duration           | `string`         | `"300ms"` |
-| endDuration        | `string`         | `"150ms"` |
-| zIndex             | `number`         | `1`       |
-| compositeOnly      | `boolean`        | `false`   |
-| includeChildren    | `boolean`        | `false`   |
-| ignoreTransparency | `boolean|string` | `["img"]` |
-| restrictToViewport | `boolean`        | `false`   |
+| option             | type            | default   |
+| ------------------ | --------------- | --------- |
+| easing             | `string`        | `"ease"`  |
+| duration           | `string`        | `"300ms"` |
+| endDuration        | `string`        | `"150ms"` |
+| zIndex             | `number`        | `1`       |
+| compositeOnly      | `boolean`       | `false`   |
+| includeChildren    | `boolean`       | `false`   |
+| ignoreTransparency | `boolean|array` | `["img"]` |
+| restrictToViewport | `boolean`       | `false`   |
 
 
 ### Details
