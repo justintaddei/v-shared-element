@@ -8,8 +8,8 @@
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
-Declarative shared-element transitions between pages for Vue.js.
-Uses [illusory](https://npmjs.com/package/illusory) under the hood.
+Declarative shared-element transitions between pages for Vue.js.  
+*Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
 
 ### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
 > _Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
