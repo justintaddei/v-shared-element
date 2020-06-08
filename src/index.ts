@@ -5,7 +5,6 @@ import { DEFAULT_OPTIONS, ISharedElementOptions } from './options'
 import { createRouteGuard } from './routeGuard'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
-import { $emit } from './utils/emit'
 import { VNode } from 'vue'
 import { sharedElementMixin } from './mixin'
 
@@ -69,8 +68,6 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
       to._to(from)
 
       await new Promise((r) => requestAnimationFrame(r))
-
-      $emit(vnode, 'shared-element-activated', id)
     },
     beforeDetach(from, to) {
       // if there was no `endDuration`
@@ -80,12 +77,10 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
         !combinedOptions.endDuration ||
         parseFloat(combinedOptions.endDuration) <= 0
       )
-        return $emit(vnode, 'shared-element-settled', id)
+        return
 
       from.hide()
       to.showNatural()
-
-      $emit(vnode, 'shared-element-settled', id)
 
       to.setStyle('transition', `opacity ${combinedOptions.endDuration}`)
       to.hide()
@@ -93,8 +88,6 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
       return to.waitFor('opacity')
     },
   })
-
-  $emit(vnode, 'shared-element-finished', id)
 }
 
 /**
