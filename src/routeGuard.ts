@@ -20,6 +20,10 @@ export function createRouteGuard(
 
     // Let's loop over all the candidates and create a record of them
     sharedElementCandidates.forEach((candidate, id) => {
+      const bcr = candidate.element.getBoundingClientRect()
+
+      if (candidate.options.restrictToViewport && !withinViewport(bcr)) return
+
       const element = new IllusoryElement(candidate.element, {
         includeChildren: candidate.options.includeChildren,
         zIndex: candidate.options.zIndex,
@@ -34,8 +38,6 @@ export function createRouteGuard(
             subSharedElements.push(node)
         },
       })
-
-      if (candidate.options.restrictToViewport && !withinViewport(element)) return
 
       sharedElementCache.set(id, {
         id,

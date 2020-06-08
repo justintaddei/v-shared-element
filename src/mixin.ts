@@ -18,6 +18,6 @@ export const sharedElementMixin = {
   activated() {
     if (this.$data.$_vSharedElement_firstRender) return (this.$data.$_vSharedElement_firstRender = false)
 
-    this.$data.$_vSharedElement_triggers.forEach((trigger) => trigger())
+    this.$data.$_vSharedElement_triggers.forEach((trigger: TriggerFunction) => trigger())
   },
 } as ThisTypedComponentOptionsWithArrayProps<Vue, unknown, unknown, unknown, never>
