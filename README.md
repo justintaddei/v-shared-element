@@ -326,6 +326,10 @@ Vue.use(SharedElementDirective, {
   
   By default, all shared-elements, with a matching element on the next page, will be activated when the route changes—regardless of their position in the document. With `restrictToViewport` set to `true`, only those elements which are in the viewport will be activated (those outside the viewport will behave as normal elements).
 
+  > **Recommended:**  
+  > Setting this to `true` makes navigation feel smoother.  
+  > This setting is disabled by default to preserve backwards compatibility.  
+
   **`restrictToViewport: true`**  
 
   ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/restrictToViewport.gif)
