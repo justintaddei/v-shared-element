@@ -379,7 +379,7 @@ This section assumes you have an understanding of Vue's transition component.
 export default {
   methods: {
     beforeLeave(el) {
-      const {top, left, right} = el.getBoundingClientRect();
+      const {top} = el.getBoundingClientRect();
       el.style.position = "fixed";
       el.style.top = `${top}px`;
       el.style.left = 0;
