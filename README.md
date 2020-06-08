@@ -344,15 +344,19 @@ This section assumes you have an understanding of Vue's transition component.
 **In your CSS**
 ```css
 .page-enter-active {
- transition: opacity 300ms ease;
+  transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1) 250ms;
+}
+
+.page-enter {
+  opacity: 0;
 }
 
 .page-leave-active {
   position: absolute;
+  transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 
-.page-leave-to,
-.page-enter {
+.page-leave-to {
   opacity: 0;
 }
 ```
@@ -375,14 +379,18 @@ This section assumes you have an understanding of Vue's transition component.
 export default {
   methods: {
     beforeLeave(el) {
-      const {top} = el.getBoundingClientRect();
+      const {top, left, right} = el.getBoundingClientRect();
       el.style.position = "fixed";
       el.style.top = `${top}px`;
+      el.style.left = 0;
+      el.style.right = 0;
       el.style.zIndex = '-1';
     },
     afterLeave(el) {
       el.style.position = '';
       el.style.top = '';
+      el.style.left = '';
+      el.style.right = '';
       el.style.zIndex = '';
     }
   }
@@ -406,11 +414,15 @@ export default {
       const {top} = el.getBoundingClientRect();
       el.style.position = "fixed";
       el.style.top = `${top}px`;
+      el.style.left = 0;
+      el.style.right = 0;
       el.style.zIndex = '-1';
     },
     afterLeave(el) {
       el.style.position = '';
       el.style.top = '';
+      el.style.left = '';
+      el.style.right = '';
       el.style.zIndex = '';
     }
   }
