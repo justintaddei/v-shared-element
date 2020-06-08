@@ -8,8 +8,8 @@
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
-Declarative shared-element transitions between pages for Vue.js  
-<small>Uses [illusory](https://npmjs.com/package/illusory) under the hood.</small>
+Declarative shared-element transitions between pages for Vue.js.
+Uses [illusory](https://npmjs.com/package/illusory) under the hood.
 
 ### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
 > _Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
@@ -106,7 +106,7 @@ export default {
 
 ## Usage
 
-Add `v-shared-element:<namespace>` to an element to transform it into a shared-element, then on another page and the directive to an element and use the same namespace. That's it, you're done (there are more options below if you need them).
+Add `v-shared-element:<namespace>` to an element to transform it into a shared-element. On another page add the directive to an element and use the same namespace. That's it, you're done (there are more options below if you need them).
 > Note: A given namespace should only be used once per-page. See below for usage with `v-for`.  
 > Also, `keep-alive` routes need special treatment (see below).
 
@@ -116,7 +116,7 @@ Add `v-shared-element:<namespace>` to an element to transform it into a shared-e
 
 #### Usage with `v-for`
 
-Suppose you have a list of the users contacts and you want all the profile pictures to be shared-elements.  
+Suppose you have a list of contacts and you want all the profile pictures to be shared-elements.  
 Use ["dynamic directive arguments"](https://vuejs.org/v2/guide/custom-directive.html#Dynamic-Directive-Arguments) to give a different namespace to each contact in the list (this is typically the same ID used for `v-for`'s `:key` prop).
 
 ```vue
@@ -171,7 +171,7 @@ export default {
 
 #### Usage with `keep-alive`
 
-If you have routes that use `<keep-alive>` then the transition only run once, and then never again for a given namespace.
+If you have routes that use `<keep-alive>`, you must add some additional code. Otherwise, the transition will only run once, and not run again while the component remains alive.
 
 To fix this, use `sharedElementMixin` on routes that are "kept alive".
 
@@ -208,7 +208,7 @@ export default {
 
 ## Options  
 
-Options can be applied either globally (when you register the plugin) or on each individual shared-element.
+Options can be applied globally (when you register the plugin) and/or on each individual shared-element.
 
 #### A note on option hierarchy <!-- omit in toc -->
 
@@ -245,16 +245,16 @@ Vue.use(SharedElementDirective, {
 
 ### Summary
 
-| option             | type      | default   |
-| ------------------ | --------- | --------- |
-| easing             | `string`  | `"ease"`  |
-| duration           | `string`  | `"300ms"` |
-| endDuration        | `string`  | `"150ms"` |
-| zIndex             | `number`  | `1`       |
-| compositeOnly      | `boolean` | `false`   |
-| includeChildren    | `boolean` | `false`   |
-| ignoreTransparency | `boolean` | `false`   |
-| restrictToViewport | `boolean` | `false`   |
+| option             | type            | default   |
+| ------------------ | --------------- | --------- |
+| easing             | `string`        | `"ease"`  |
+| duration           | `string`        | `"300ms"` |
+| endDuration        | `string`        | `"150ms"` |
+| zIndex             | `number`        | `1`       |
+| compositeOnly      | `boolean`       | `false`   |
+| includeChildren    | `boolean`       | `false`   |
+| ignoreTransparency | `boolean|array` | `["img"]` |
+| restrictToViewport | `boolean`       | `false`   |
 
 
 ### Details
@@ -294,7 +294,7 @@ Vue.use(SharedElementDirective, {
   
   Setting this to `true` will limit the transition to `transform` and `opacity` properties only (improves performance).
 
-  **`compositeOnly: true`** *(notice that `border-radius` is not animated)*  
+  **`compositeOnly: true`** *(notice that `border-radius` is not animated)*
 
   ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/compositeOnly.gif)
 
@@ -316,7 +316,7 @@ Vue.use(SharedElementDirective, {
 - **type:** `boolean | string[]`
 - *default:* `["img"]`
 
-  Typically if you're navigating from `/home` to `/about` then the clone of the shared-element on `/about` will fade in and the clone from `/home` will remain at `opacity: 1`.  
+  Typically, if you're navigating from `/home` to `/about`, then the clone of the shared-element on `/about` will fade in and the clone from `/home` will remain at `opacity: 1`.  
   However, if the shared-element on `/home` has a `background-color` with an alpha channel (e.g. `rgba(0, 0, 0, 0.5)`), or no `background-color` at all, then the clone of the `/home` element will **fade out** *while* the clone of the element from `/about` fades in. This is usually what you want *unless* the element has a background that `v-shared-element` can't detect. This could happen if the element is acting as a container for an `<img>` element but has no background of its own, or it has a `background-image` without a `background-color` specified. In this case, setting `ignoreTransparency` to `true` will override this behavior. You can also specify an array of HTML tag-names (e.g. `["img", "div", "button"]`) to automatically set this option to `true` for those elements (a `string[]` like this is best used as a [global option](#setting-global-options)).
   > Try setting this to `true` if you see a "flash" half-way through the transition.
 
