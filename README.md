@@ -344,16 +344,16 @@ This section assumes you have an understanding of Vue's transition component.
 **In your CSS**
 ```css
 .page-enter-active {
-  transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1) 250ms;
+  transition: opacity 250ms ease 250ms;
 }
 
 .page-leave-active {
   position: absolute;
-  transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1);
+  transition: opacity 250ms ease;
 }
 
-.page-enter,
-.page-leave-to {
+.page-leave-to,
+.page-enter {
   opacity: 0;
 }
 ```
