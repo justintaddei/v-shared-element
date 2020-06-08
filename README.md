@@ -3,6 +3,7 @@
 ![](https://img.shields.io/github/issues-raw/justintaddei/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/v/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/dt/v-shared-element.svg?style=flat)
+[![](https://img.shields.io/badge/Chat_on-Spectrum-blueviolet?logo=spectrum&style=flat)](https://spectrum.chat/v-shared-element?tab=chat)
 ![](https://img.shields.io/npm/l/v-shared-element.svg?style=flat)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
