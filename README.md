@@ -8,29 +8,67 @@
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
-Declarative shared-element transitions between pages for Vue.js and Nuxt.js  
-Uses [illusory](https://npmjs.com/package/illusory) under the hood. 
+Declarative shared-element transitions between pages for Vue.js  
+<small>Uses [illusory](https://npmjs.com/package/illusory) under the hood.</small>
 
-**[Example](https://justintaddei.github.io/v-shared-element/)**  
-_Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
+### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
+> _Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
+
+[![gif of example page](https://github.com/justintaddei/v-shared-element/blob/assets/readme-demo.gif?raw=true)](https://justintaddei.github.io/v-shared-element/)
+
+---
+
+**Index**
+- [Install](#install)
+  - [Register the plugin](#register-the-plugin)
+    - [Vue.js + vue-router](#vuejs--vue-router)
+    - [Nuxt.js](#nuxtjs)
+- [Usage](#usage)
+    - [Usage with `v-for`](#usage-with-v-for)
+    - [Usage with `keep-alive`](#usage-with-keep-alive)
+- [Options](#options)
+  - [Setting global options](#setting-global-options)
+  - [Setting per-element options](#setting-per-element-options)
+  - [Summary](#summary)
+  - [Details](#details)
+    - [easing](#easing)
+    - [duration](#duration)
+    - [endDuration](#endduration)
+    - [zIndex](#zindex)
+    - [compositeOnly](#compositeonly)
+    - [includeChildren](#includechildren)
+    - [ignoreTransparency](#ignoretransparency)
+    - [restrictToViewport](#restricttoviewport)
+- [Usage with page transitions](#usage-with-page-transitions)
+- [illusory](#illusory)
+- [Asking question and reporting bugs](#asking-question-and-reporting-bugs)
+- [How to contributing](#how-to-contributing)
+  - [Development setup](#development-setup)
+  - [Common NPM Scripts](#common-npm-scripts)
+  - [Web page for development](#web-page-for-development)
+- [License](#license)
 
 ## Install
 
+**npm**
 ```sh
-$ npm install v-shared-element
+$ npm i v-shared-element
 ```
-**or**
+or  
+
+**CDN**  
 ```html
-<script src="http://unpkg.com/illusory">
-<script src="http://unpkg.com/v-shared-element">
+<script src="https://unpkg.com/illusory"></script>
+<script src="https://unpkg.com/v-shared-element"></script>
 ```
-## Register the plugin
 
-### Vue.js + vue-router
+### Register the plugin
 
-In your `main.js` file
+#### Vue.js + vue-router  
 
 ```js
+//main.js
+
 import Vue from 'vue'
 import {
     SharedElementRouteGuard,
@@ -43,132 +81,353 @@ const router = new VueRouter({ ... })
 
 router.beforeEach(SharedElementRouteGuard)
 ```
+or  
 
-### Nuxt.js
+#### Nuxt.js
 
 Create a file in `~/plugins` named `v-shared-element.client.js`
-
 ```js
+// ~/plugins/v-shared-element.client.js
+
 import Vue from 'vue';
-import { NuxtSharedElementRouteGuard, SharedElementDirective } from 'v-shared-element';
+import { SharedElementDirective, NuxtSharedElementRouteGuard } from 'v-shared-element';
 
 Vue.use(SharedElementDirective);
 
 export default NuxtSharedElementRouteGuard;
 ```
-
-Then in your `nuxt.config.js`
+Then add it in your `nuxt.config.js`
 
 ```js
 export default {
   plugins: ['~/plugins/v-shared-element.client.js'],
-};
-```
-
-### TypeScript
-If you use TypeScript, create a `vue.d.ts` file and paste in the following:
-```ts
-import { illusory, IllusoryElement } from 'illusory/types'
-import { IOptions } from 'illusory/types/options'
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $illusory: typeof illusory
-    $createIllusoryElement: (
-      el: HTMLElement | SVGElement,
-      opts?: Partial<IOptions>
-    ) => IllusoryElement
-  }
 }
 ```
 
 ## Usage
 
-Add `v-shared-element` to the element you want to transition on each page.
+Add `v-shared-element:<namespace>` to an element to transform it into a shared-element, then on another page and the directive to an element and use the same namespace. That's it, you're done (there are more options below if you need them).
+> Note: A given namespace should only be used once per-page. See below for usage with `v-for`.  
+> Also, `keep-alive` routes need special treatment (see below).
 
 ```html
-<div v-shared-element:your-id></div>
-
-<!-- Or -->
-
-<div v-shared-element:[computedId]></div>
+<div v-shared-element:namespace ></div>
 ```
 
-## Per-element options
+#### Usage with `v-for`
+
+Suppose you have a list of the users contacts and you want all the profile pictures to be shared-elements.  
+Use ["dynamic directive arguments"](https://vuejs.org/v2/guide/custom-directive.html#Dynamic-Directive-Arguments) to give a different namespace to each contact in the list (this is typically the same ID used for `v-for`'s `:key` prop).
+
+```vue
+<img
+  :src="contact.profile"
+  v-shared-element:[contact.id]
+/>
+```
+
+![contact example gif](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/contacts.gif)
+
+<details>
+  <summary>Detailed example</summary>
 
 ```html
-<div
-  v-shared-element:profile="{
-        easing: 'ease',
-        duration: '300ms',
-        endDuration: '150ms',
-        zIndex: 1,
-        compositeOnly: false,
-        includeChildren: false,
-      }"
-></div>
-```
+<template>
+  <div>
+    <h1>Contacts</h1>
+    <ul>
+      <li
+        v-for="contact in contacts"
+        :key="contact.id"
+      >
+        <img
+          :src="contact.profile"
+          v-shared-element:[contact.id]
+        />
+        <span>{{ contact.name }}</span>
+      </li>
+    </ul>
+  </div>
+</template>
 
-## Global options
+<script>
+export default {
+  data() {
+    return {
+      contacts: [
+        {
+          id: '11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000',
+          profile: './user/11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000/profile',
+          name: 'John Doe'
+        },
+        ...
+      ]
+    }
+  }
+}
+</script>
+```
+</details>
+
+#### Usage with `keep-alive`
+
+If you have routes that use `<keep-alive>` then the transition only run once, and then never again for a given namespace.
+
+To fix this, use `sharedElementMixin` on routes that are "kept alive".
+
+##### Using sharedElementMixin <!-- omit in toc -->
+
+Import the mixin into to any components on your `keep-alive` routes that contain *shared-elements*. Then, in those components, pass `$keepSharedElementAlive`—a method provided by the mixin—as an option to every `v-shared-element` directive on that route. Everything should now work as you would expect.
+
+> Note: This is **only** necessary for routes that are kept alive. For example, if `/home` is kept alive but `/about` is not, then only `/home` needs to import the mixin.
+
+<details>
+  <summary><code>keep-alive</code> example</summary>
+
+<br/>
+
+```vue
+<template>
+    <div>
+        <img
+            src="logo.png"
+            v-shared-element:logo="{ $keepSharedElementAlive }"
+        />
+    </div>
+</template>
+
+<script>    
+import { sharedElementMixin } from 'v-shared-element'
+
+export default {
+    mixins: [sharedElementMixin]
+}
+</script>
+```
+</details>
+
+## Options  
+
+Options can be applied either globally (when you register the plugin) or on each individual shared-element.
+
+#### A note on option hierarchy <!-- omit in toc -->
+
+- *Per-element* options **always** override global options.
+- *Per-element* options on the page being navigated away from take precedence.
+  - The only exception to this is `includeChildren` since it applies to each element individually.
+  > If you're navigating from `/home` to `/about`, per-element options specified in `/home` will override those specified in `/about`.
+
+
+### Setting global options
 
 ```js
+// In main.js or ~/plugins/v-shared-element.client.js
+
+...
+
 Vue.use(SharedElementDirective, {
-  easing: 'ease',
-  duration: '300ms',
-  endDuration: '150ms',
-  zIndex: 1,
-  compositeOnly: false,
-  includeChildren: false,
+  /* options */
 });
+
+...
 ```
 
-## Option hierarchy
+### Setting per-element options
 
-If options are specified on a per-element bases, the options specified on the page you are navigating *away from* will take precedence over those (if any) that are specified on the page you're navigating *to*. The only exception is `includeChildren` as it will be applied to each element individually.
+```vue
+<img
+  src="logo.png"
+  v-shared-element:logo="{
+    /* options */
+  }"
+/>
+```
 
-## Options
+### Summary
 
-- `includeChildren`: `boolean`  
-  - default: `false`  
-  **Note:** Applies to each element individually.   
-  When true, all `ChildNode`'s of the element are included in the animation.
-- easing: `string`
-  - default: `'ease'`  
-  Sets the easing fuction of the transition. This can be any value that is accepted by the CSS `transition-timing-function` property.
-- duration: `string`
-  - default: `'300ms'`  
-  Sets the duration of the transition. This can be any value that is accepted by the CSS `transition-duration` property.
-- endDuration: `string`
-  - default: `'150ms'`  
-  **Note:** has no effect if `includeChildren` is `true`.  
-  When the transition is finished, the shared-element will take this long to fade out (making it seem as though its contents fade in). This can be any value that is accepted by the CSS `transition-duration` property. Set this to `"0s"` to disable it (the contents of the shared element will render as soon as the transition finishes).
-- compositeOnly: `boolean`
-  - default: `false`  
-  By default, a shared-element transition consists of `transform` `opacity` and `border-radius`. Setting this to `true` will limit the transition to `transform` and `opacity` only.
-- ignoreTransparency:	`boolean | string[]`
-  - default: `['img']`  
-  If `false`, and the element we're transitioning **to** has a `transparent` background then the element we're transitioning from will fade out. If `true`, the transparency of the element's background will be ignored. This can also be an array of tag names that should be ignored (e.g. `['img', 'button']`). 
-    > If you're seeing a "flash" half way through the transition, try setting this to `true`.
-- zIndex: `number`
-  - default: `1`  
-  The z-index used for the shared-elements during the transition.
-- restrictToViewport: `boolean`
-  - default: `false`  
-  Setting this to `true` will disable any shared-elements on the current page **unless** they are in the viewport.
+| option             | type      | default   |
+| ------------------ | --------- | --------- |
+| easing             | `string`  | `"ease"`  |
+| duration           | `string`  | `"300ms"` |
+| endDuration        | `string`  | `"150ms"` |
+| zIndex             | `number`  | `1`       |
+| compositeOnly      | `boolean` | `false`   |
+| includeChildren    | `boolean` | `false`   |
+| ignoreTransparency | `boolean` | `false`   |
+| restrictToViewport | `boolean` | `false`   |
 
-## A note about `keep-alive` routes
 
-If your app has `keep-alive` routes that contain shared-elements, they will need a little extra to make them work.  
-See [`keep-alive` routes](https://github.com/justintaddei/v-shared-element/blob/master/RECIPES.md#routes-with-keep-alive) in [`RECIPES.md`](https://github.com/justintaddei/v-shared-element/blob/master/RECIPES.md) for more details.
+### Details
 
-# illusory
+#### easing
 
-`v-shared-element` uses [illusory](https://npmjs.com/package/illusory) under the hood to morph between elements and is made available on the Vue instance. For documention on how to use it, [click here](https://npmjs.com/package/illusory).
+- **type:** `string`
+- *default:* `"ease"`  
 
-illusory is exposed as **`Vue.prototype.$illusory`** and **`Vue.prototype.$createIllusoryElement`**
+  A CSS [easing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function) defining the acceleration curve of the transition.  
+  (e.g. `"ease-in"`, `"cubic-bezier(.29, 1.01, 1, -0.68)"`).
+
+#### duration
+
+- **type:** `string`
+- *default:* `"300ms"`  
+
+  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the amount of time the transition should take.  
+  (e.g. `"0.5s"`, `"250ms"`)
+
+#### endDuration
+- **type:** `string | false`
+- *default:* `"100ms"` 
+
+  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the duration of the "fade out" stage of the animation to blend the duplicated element with the real one. Set to `false` or `"0s"` to disable the fade out effect.
+  > **Note:** This option only applies if `includeChildren` is `false`.
+
+#### zIndex
+- **type:** `number`
+- *default:* `1`
+
+  The `z-index` to be used for the shared-element during the animation.
+
+#### compositeOnly
+- **type:** `boolean`
+- *default:* `false`
+  
+  Setting this to `true` will limit the transition to `transform` and `opacity` properties only (improves performance).
+
+  **`compositeOnly: true`** *(notice that `border-radius` is not animated)*  
+
+  ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/compositeOnly.gif)
+
+#### includeChildren
+- **type:** `boolean`
+- *default:* `false`
+
+  `v-shared-element` works by cloning each element (and its *computed styles*) then positioning the clones over the original element. By default, only the *root* node—the one that has the directive on it—will be cloned. Setting `includeChildren` to `true` will also clone the root node's *entire* subtree **(this is needed to clone text elements such as `h1`).**
+
+  **`includeChildren: false`**  
+
+  ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/includeChildren_false.gif)
+
+  **`includeChildren: true`**  
+
+  ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/includeChildren_true.gif)
+
+#### ignoreTransparency
+- **type:** `boolean | string[]`
+- *default:* `["img"]`
+
+  Typically if you're navigating from `/home` to `/about` then the clone of the shared-element on `/about` will fade in and the clone from `/home` will remain at `opacity: 1`.  
+  However, if the shared-element on `/home` has a `background-color` with an alpha channel (e.g. `rgba(0, 0, 0, 0.5)`), or no `background-color` at all, then the clone of the `/home` element will **fade out** *while* the clone of the element from `/about` fades in. This is usually what you want *unless* the element has a background that `v-shared-element` can't detect. This could happen if the element is acting as a container for an `<img>` element but has no background of its own, or it has a `background-image` without a `background-color` specified. In this case, setting `ignoreTransparency` to `true` will override this behavior. You can also specify an array of HTML tag-names (e.g. `["img", "div", "button"]`) to automatically set this option to `true` for those elements (a `string[]` like this is best used as a [global option](#setting-global-options)).
+  > Try setting this to `true` if you see a "flash" half-way through the transition.
+
+#### restrictToViewport
+- **type:** `boolean`
+- *default:* `false`
+  
+  By default, all shared-elements, with a matching element on the next page, will be activated when the route changes—regardless of their position in the document. With `restrictToViewport` set to `true`, only those elements which are in the viewport will be activated (those outside the viewport will behave as normal elements).
+
+  **`restrictToViewport: true`**  
+
+  ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/restrictToViewport.gif)
+
+## Usage with page transitions
+
+> <small>Thanks to [@719media](https://github.com/719media) for figuring out how to make this work.</small>
+
+This section assumes you have an understanding of Vue's transition component.  
+
+**In your CSS**
+```css
+.page-enter-active {
+ transition: opacity 300ms ease;
+}
+
+.page-leave-active {
+  position: absolute;
+}
+
+.page-leave-to,
+.page-enter {
+  opacity: 0;
+}
+```
+
+**For Vue.js + vue-router**
+```vue
+// App.vue (or equivalent)
+
+<div id="app">
+  <transition
+    name="page"
+    @before-leave="beforeLeave"
+    @after-leave="afterLeave"
+  >
+    <router-view></router-view>
+  </transition>
+</div>
+
+<script>
+export default {
+  methods: {
+    beforeLeave(el) {
+      const {top} = el.getBoundingClientRect();
+      el.style.position = "fixed";
+      el.style.top = `${top}px`;
+      el.style.zIndex = '-1';
+    },
+    afterLeave(el) {
+      el.style.position = '';
+      el.style.top = '';
+      el.style.zIndex = '';
+    }
+  }
+}
+</script>
+```
+
+or
+
+**For Nuxt.js**
+
+
+```js
+// nuxt.config.js
+
+export default {
+  pageTransition: {
+    name: 'page',
+    mode: '',
+    beforeLeave(el) {
+      const {top} = el.getBoundingClientRect();
+      el.style.position = "fixed";
+      el.style.top = `${top}px`;
+      el.style.zIndex = '-1';
+    },
+    afterLeave(el) {
+      el.style.position = '';
+      el.style.top = '';
+      el.style.zIndex = '';
+    }
+  }
+}
+```
+
+**Important note about page transitions**
+
+If the total duration of the page transition is *longer* than the duration of a shared-element on that page, things will get weird. You have been warned.
+
+## illusory
+
+`v-shared-element` derives its element-morphing powers from its sister project [illusory](https://github.com/justintaddei/illusory).
+
+illusory comes bundled with `v-shared-element` as Vue instance methods.  
+For more information on how to use it, see the [illusory documentation](https://github.com/justintaddei/illusory) or the [illusory example page](https://justintaddei.github.io/illusory/).
+
+illusory is exposed on the Vue instance as `$illusory` and `$createIllusoryElement`.
 
 For example:
-```html
+
+```vue
 <template>
   <div>
     <div ref="from"></div>
@@ -188,7 +447,80 @@ For example:
 </script>
 ```
 
+## Asking question and reporting bugs
 
-# Common recipes
+If you're experiencing any problems, or have general questions about the plugin, feel free open a new issue (but search through the existing ones first, as your question may have been answered already).
 
-**See [RECIPES.md](https://github.com/justintaddei/v-shared-element/tree/master/RECIPES.md)** for common recipes for things the plugin doesn't handle by default.
+> Note that issues related to the `$illusory` and `$createIllusoryElement` should be opened on the [illusory repository](https://github.com/justintaddei/illusory/issues) instead.
+
+## How to contributing
+
+### Development setup
+
+1. Fork and clone the repo.
+   
+   ```sh
+    $ git clone https://github.com/<your username>/v-shared-element.git
+   ```
+2. Install the dependencies
+   
+   ```sh
+    $ npm install
+   ```
+3. Create a new branch for your pull request
+   
+   ```sh
+    $ git checkout -b pr/your-branch-name
+   ```
+
+### Common NPM Scripts
+
+- `npm run build` — Runs the build script.
+- `npm run dev` — Runs the build script in watch mode.
+- `npm run test` — Runs the tests.
+- `npm run format` — Fixes any code formatting issues.
+- `npm run lint` — Lints the code.
+
+### Web page for development
+
+Run `npm link` so you can use it in other local projects.
+
+
+**Method one**  
+You can either create a new Vue.js or Nuxt.js project and use `npm link v-shared-element` to test your changes. 
+
+or
+
+**Method two**  
+Clone the repo again, this time into a new directory. Then and run the following:
+
+```sh
+$ git checkout example
+```
+```sh
+$ npm install
+```
+```sh
+$ npm link v-shared-element
+```
+```sh
+$ npm run dev
+```
+
+You should now have the example page running on `localhost`.  
+Hot reload will be triggered by changes made to `v-shared-element`.
+
+
+## License
+
+This project is distributed under the [MIT License](https://github.com/justintaddei/v-shared-element/blob/master/LICENSE.md).
+
+### The MIT License (MIT)  <!-- omit in toc -->
+
+Copyright (c) 2020 Justin Taddei
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
