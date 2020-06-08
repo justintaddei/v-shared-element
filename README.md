@@ -347,15 +347,12 @@ This section assumes you have an understanding of Vue's transition component.
   transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1) 250ms;
 }
 
-.page-enter {
-  opacity: 0;
-}
-
 .page-leave-active {
   position: absolute;
   transition: opacity 250ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 
+.page-enter,
 .page-leave-to {
   opacity: 0;
 }
