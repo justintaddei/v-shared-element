@@ -9,7 +9,7 @@
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
-Declarative shared-element transitions between pages for Vue.js.  
+Declarative shared-element transitions between pages for [Vue.js](https://vuejs.org/).  
 *Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
 
 ### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
@@ -112,7 +112,7 @@ Add `v-shared-element:<namespace>` to an element to transform it into a shared-e
 > Also, `keep-alive` routes need special treatment (see below).
 
 ```html
-<div v-shared-element:namespace ></div>
+<div v-shared-element:namespace></div>
 ```
 
 #### Usage with `v-for`
@@ -246,16 +246,16 @@ Vue.use(SharedElementDirective, {
 
 ### Summary
 
-| option             | type               | default   |
-| ------------------ | ------------------ | --------- |
-| easing             | `string`           | `"ease"`  |
-| duration           | `string`           | `"300ms"` |
-| endDuration        | `string`           | `"150ms"` |
-| zIndex             | `number`           | `1`       |
-| compositeOnly      | `boolean`          | `false`   |
-| includeChildren    | `boolean`          | `false`   |
-| ignoreTransparency | `boolean \| array` | `["img"]` |
-| restrictToViewport | `boolean`          | `false`   |
+| option             | type                  | default   |
+| ------------------ | --------------------- | --------- |
+| easing             | `string`              | `"ease"`  |
+| duration           | `string`              | `"300ms"` |
+| endDuration        | `string`              | `"150ms"` |
+| zIndex             | `number`              | `1`       |
+| compositeOnly      | `boolean`             | `false`   |
+| includeChildren    | `boolean`             | `false`   |
+| ignoreTransparency | `boolean \| string[]` | `["img"]` |
+| restrictToViewport | `boolean`             | `false`   |
 
 
 ### Details
@@ -265,16 +265,14 @@ Vue.use(SharedElementDirective, {
 - **type:** `string`
 - *default:* `"ease"`  
 
-  A CSS [easing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function) defining the acceleration curve of the transition.  
-  (e.g. `"ease-in"`, `"cubic-bezier(.29, 1.01, 1, -0.68)"`).
+  A CSS [easing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function) defining the acceleration curve of the transition (e.g. `"ease-in"`, `"cubic-bezier(.29, 1.01, 1, -0.68)"`).
 
 #### duration
 
 - **type:** `string`
 - *default:* `"300ms"`  
 
-  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the amount of time the transition should take.  
-  (e.g. `"0.5s"`, `"250ms"`)
+  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the amount of time the transition should take (e.g. `"0.5s"`, `"250ms"`).
 
 #### endDuration
 - **type:** `string | false`
