@@ -1,12 +1,15 @@
 # Changelog
 
-### 2.1.0 **(UNRELEASED)**
+### 2.1.0 (June 9th, 2020)
 
-**Features**
-- Added `ignoreTransparency` option (see [#4](https://github.com/justintaddei/v-shared-element/issues/4) for why)
-- Added `sharedElementMixin` for `keep-alive routes` to resolve [#2](https://github.com/justintaddei/v-shared-element/issues/2)
-- Added `restrictToViewport` option ([#7](https://github.com/justintaddei/v-shared-element/issues/7))
-- Updated *illusory* to v1.4.1
+*Features*
+- Added `ignoreTransparency` option (see [#4](https://github.com/justintaddei/v-shared-element/issues/4) for why).
+- Added `sharedElementMixin` for `keep-alive routes` to resolve [#2](https://github.com/justintaddei/v-shared-element/issues/2).
+- Added `restrictToViewport` option ([#7](https://github.com/justintaddei/v-shared-element/issues/7)).
+- Updated *illusory* to v1.4.1.
+  
+*Other*
+- Complete rewrite of the documentation.
 
 ---
 
