@@ -17,6 +17,9 @@ Declarative shared-element transitions between pages for [Vue.js](https://vuejs.
 
 [![gif of example page](https://github.com/justintaddei/v-shared-element/blob/assets/readme-demo.gif?raw=true)](https://justintaddei.github.io/v-shared-element/)
 
+#### Community chat <!-- omit in toc -->  
+[![](https://img.shields.io/badge/Chat_on-Spectrum-blueviolet?style=for-the-badge&logo=spectrum)](https://spectrum.chat/v-shared-element?tab=chat)
+
 ---
 
 **Index**
