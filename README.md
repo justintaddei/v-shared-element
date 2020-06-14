@@ -1,4 +1,7 @@
-# v-shared-element <!-- omit in toc -->
+<p align="center">
+<img width="150" src="https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/logo.png" alt="Vue logo">
+</p>
+<h1 align="center">v-shared-element</h1>
 
 ![](https://img.shields.io/github/issues-raw/justintaddei/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/v/v-shared-element.svg?style=flat)
