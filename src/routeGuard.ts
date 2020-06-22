@@ -49,7 +49,7 @@ export function createRouteGuard(
     // Then lets clear the candidates list
     sharedElementCandidates.clear()
 
-    subSharedElements.forEach((el) => (el.style.visibility = 'hidden'))
+    subSharedElements.forEach((el) => { el.style.visibility = 'hidden' })
 
     // Move on to the next middleware
     next()
