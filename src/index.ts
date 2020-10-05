@@ -1,12 +1,13 @@
 import { illusory, IllusoryElement } from 'illusory'
 import { IOptions } from 'illusory/types/options'
+import { VNode } from 'vue'
 import { PluginObject } from 'vue/types/plugin'
+import { sharedElementMixin } from './mixin'
 import { DEFAULT_OPTIONS, ISharedElementOptions } from './options'
 import { createRouteGuard } from './routeGuard'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
-import { VNode } from 'vue'
-import { sharedElementMixin } from './mixin'
+import { hideElement } from './utils/hideElement'
 
 /**
  * Map of all elements on the current page that
@@ -51,8 +52,9 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
         (node instanceof HTMLElement || node instanceof SVGElement) &&
         node.dataset.illusoryId &&
         sharedElementCache.has(node.dataset.illusoryId)
-      )
-        node.style.visibility = 'hidden'
+      ) {
+        hideElement(node)
+      }
     },
     async beforeAnimate(from, to) {
       // Wait for the next frame

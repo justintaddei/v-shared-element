@@ -1,6 +1,7 @@
 import { IllusoryElement } from 'illusory'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
+import { hideElement } from './utils/hideElement'
 import { withinViewport } from './utils/withinViewport'
 
 export function createRouteGuard(
@@ -49,7 +50,9 @@ export function createRouteGuard(
     // Then lets clear the candidates list
     sharedElementCandidates.clear()
 
-    subSharedElements.forEach((el) => { el.style.visibility = 'hidden' })
+    subSharedElements.forEach((el) => {
+      hideElement(el)
+    })
 
     // Move on to the next middleware
     next()
