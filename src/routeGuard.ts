@@ -1,60 +1,13 @@
-import { IllusoryElement } from 'illusory'
-import { ICachedSharedElement } from './types/ICachedSharedElement'
-import { ISharedElementCandidate } from './types/ISharedElementCandidate'
-import { hideElement } from './utils/hideElement'
-import { withinViewport } from './utils/withinViewport'
+import { prepareCandidates } from './utils/sharedElementHandler'
 
-export function createRouteGuard(
-  sharedElementCandidates: Map<string, ISharedElementCandidate>,
-  sharedElementCache: Map<string, ICachedSharedElement>,
-) {
+export function createRouteGuard() {
   /**
    * Vue.js route guard
    * @example
    * router.beforeEach(SharedElementRouteGuard)
    */
   const SharedElementRouteGuard = (to, from, next: () => void) => {
-    // Clear any existing shared elements (i.e. from the route before last)
-    sharedElementCache.clear()
-
-    const subSharedElements: (HTMLElement | SVGElement)[] = []
-
-    // Let's loop over all the candidates and create a record of them
-    sharedElementCandidates.forEach((candidate, id) => {
-      const bcr = candidate.element.getBoundingClientRect()
-
-      if (candidate.options.restrictToViewport && !withinViewport(bcr)) return
-
-      const element = new IllusoryElement(candidate.element, {
-        includeChildren: candidate.options.includeChildren,
-        zIndex: candidate.options.zIndex,
-        ignoreTransparency: candidate.options.ignoreTransparency,
-        processClone(node, depth) {
-          if (
-            depth > 0 &&
-            (node instanceof HTMLElement || node instanceof SVGElement) &&
-            node.dataset.illusoryId &&
-            sharedElementCache.has(node.dataset.illusoryId)
-          )
-            subSharedElements.push(node)
-        },
-      })
-
-      sharedElementCache.set(id, {
-        id,
-        element,
-        options: candidate.options,
-      })
-    })
-
-    // Then lets clear the candidates list
-    sharedElementCandidates.clear()
-
-    subSharedElements.forEach((el) => {
-      hideElement(el)
-    })
-
-    // Move on to the next middleware
+    prepareCandidates()
     next()
   }
 
