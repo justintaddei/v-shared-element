@@ -1,5 +1,4 @@
-import { illusory, IllusoryElement } from 'illusory'
-import { IOptions } from 'illusory/types/options'
+import { IIllusoryElementOptions, illusory, IllusoryElement } from 'illusory'
 import { VNode } from 'vue'
 import { PluginObject } from 'vue/types/plugin'
 import { sharedElementMixin } from './mixin'
@@ -25,10 +24,9 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
   // Add this element to the candidates list
   sharedElementCandidates.set(id, {
     element: activeElement,
-    options: combinedOptions,
+    options: combinedOptions
   })
 
-  // See if
   const cachedElement = sharedElementCache.get(id)
 
   // If this element had a matching shared element
@@ -37,25 +35,29 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
   if (!cachedElement) return
 
   await illusory(cachedElement.element, activeElement, {
-    includeChildren: combinedOptions.includeChildren,
+    element: {
+      includeChildren: combinedOptions.includeChildren,
+      ignoreTransparency: cachedElement.options.ignoreTransparency,
+      processClone(node, depth) {
+        // Hide any nested shared elements if they're currently animating
+        // because otherwise they'll show up in the clone and in their
+        // animation
+        if (
+          depth > 0 &&
+          (node instanceof HTMLElement || node instanceof SVGElement) &&
+          node.dataset.illusoryId &&
+          sharedElementCache.has(node.dataset.illusoryId)
+        )
+          hideElement(node)
+
+        return node
+      }
+    },
     compositeOnly: cachedElement.options.compositeOnly,
     duration: cachedElement.options.duration,
     zIndex: cachedElement.options.zIndex,
     easing: cachedElement.options.easing,
-    ignoreTransparency: cachedElement.options.ignoreTransparency,
-    processClone(node, depth) {
-      // Hide any nested shared elements if they're currently animating
-      // because otherwise they'll show up in the clone and in their
-      // animation
-      if (
-        depth > 0 &&
-        (node instanceof HTMLElement || node instanceof SVGElement) &&
-        node.dataset.illusoryId &&
-        sharedElementCache.has(node.dataset.illusoryId)
-      ) {
-        hideElement(node)
-      }
-    },
+
     async beforeAnimate(from, to) {
       // Wait for the next frame
       await new Promise((r) => requestAnimationFrame(r))
@@ -88,7 +90,7 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
       to.hide()
 
       return to.waitFor('opacity')
-    },
+    }
   })
 }
 
@@ -100,7 +102,7 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
 const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
   install(Vue, options) {
     Vue.prototype.$illusory = illusory
-    Vue.prototype.$createIllusoryElement = (el: HTMLElement | SVGElement, opts: IOptions) =>
+    Vue.prototype.$createIllusoryElement = (el: HTMLElement | SVGElement, opts: IIllusoryElementOptions) =>
       new IllusoryElement(el, opts)
 
     Vue.directive('shared-element', {
@@ -111,7 +113,7 @@ const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
         const id = binding.arg
         if (!id)
           throw new Error(
-            `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`,
+            `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`
           )
 
         if (binding.value?.$keepSharedElementAlive)
@@ -120,14 +122,14 @@ const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
           })
 
         trigger(activeElement, vnode, combinedOptions, id)
-      },
+      }
     })
-  },
+  }
 }
 
 const { NuxtSharedElementRouteGuard, SharedElementRouteGuard } = createRouteGuard(
   sharedElementCandidates,
-  sharedElementCache,
+  sharedElementCache
 )
 
 export { SharedElementDirective, SharedElementRouteGuard, NuxtSharedElementRouteGuard, sharedElementMixin }
@@ -135,6 +137,6 @@ export { SharedElementDirective, SharedElementRouteGuard, NuxtSharedElementRoute
 declare module 'vue/types/vue' {
   interface Vue {
     $illusory: typeof illusory
-    $createIllusoryElement: (el: HTMLElement | SVGElement, opts?: Partial<IOptions>) => IllusoryElement
+    $createIllusoryElement: (el: HTMLElement | SVGElement, opts?: Partial<IIllusoryElementOptions>) => IllusoryElement
   }
 }

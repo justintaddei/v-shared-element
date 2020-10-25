@@ -1,3 +1,5 @@
+import { Route } from 'vue-router/types/router'
+
 /**
  * SharedElement Options
  */
@@ -51,6 +53,11 @@ export interface ISharedElementOptions {
    * @default false
    */
   restrictToViewport: boolean
+
+  /**
+   * TODO: document this
+   */
+  restrictToRoutes: false | string[] | ((from: Route, to: Route, id: string) => boolean)
 }
 
 export const DEFAULT_OPTIONS: ISharedElementOptions = {
@@ -62,4 +69,5 @@ export const DEFAULT_OPTIONS: ISharedElementOptions = {
   includeChildren: false,
   ignoreTransparency: ['img'],
   restrictToViewport: false,
+  restrictToRoutes: false
 }
