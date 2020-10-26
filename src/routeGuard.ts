@@ -1,4 +1,5 @@
 import { IllusoryElement } from 'illusory'
+import { NavigationGuard, VueRouter } from 'vue-router/types/router'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { hideElement } from './utils/hideElement'
@@ -13,7 +14,7 @@ export function createRouteGuard(
    * @example
    * router.beforeEach(SharedElementRouteGuard)
    */
-  const SharedElementRouteGuard = (to, from, next: () => void) => {
+  const SharedElementRouteGuard: NavigationGuard = (to, from, next) => {
     // Clear any existing shared elements (i.e. from the route before last)
     sharedElementCache.clear()
 
@@ -73,7 +74,7 @@ export function createRouteGuard(
    * @example
    * export default NuxtSharedElementRouteGuard
    */
-  const NuxtSharedElementRouteGuard = (context: any) => {
+  const NuxtSharedElementRouteGuard = (context: { app: { router: VueRouter } }) => {
     const { router } = context.app
 
     // Listen for the route to change
