@@ -55,7 +55,7 @@ export interface ISharedElementOptions {
   restrictToViewport: boolean
 
   /**
-   * Prevents the shared-element from enter the cloning unless one of the following is true:
+   * Prevents the shared-element from entering the cloning phase unless one of the following is true:
    *
    * If `restrictToRoutes` is any array and the `path` of the upcoming route matches an item
    * in that array.
