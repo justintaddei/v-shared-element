@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0
+## 3.0.0 (October 26th, 2020)
 
 **Breaking changes**
 - Updated illusory to v2 which has a new API. Consult the illusory docs for more info. (This will only impact users who have used `vm.$illusory` or `vm.$createIllusoryElement`)
