@@ -1,6 +1,6 @@
 {
   "name": "v-shared-element",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "Declarative shared-element transitions between pages for Vue.js and Nuxt.js",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -55,9 +55,10 @@
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.4.7"
   },
   "dependencies": {
-    "illusory": "^1.4.1"
+    "illusory": "^2.0.2"
   }
 }

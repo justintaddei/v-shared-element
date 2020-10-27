@@ -1,14 +1,16 @@
+import { Route } from 'vue-router/types/router'
+
 /**
- * SharedElement Options
+ * SharedElement Options.
  */
 export interface ISharedElementOptions {
   /**
-   * CSS easing function
+   * CSS easing function.
    * @default "ease"
    */
   easing: string
   /**
-   * CSS duration
+   * CSS duration.
    * @default "300ms"
    */
   duration: string
@@ -16,23 +18,23 @@ export interface ISharedElementOptions {
    * CSS duration that controls
    * the "fade-out" stage of the animation
    * to blend the cloned node with the real one.
-   * Set to `"0s"` to disable
+   * Set to `"0s"` to disable.
    * @default "150ms"
    */
   endDuration: string | false
   /**
-   * Setting to `true` will limit animations to `transform` and `opacity` only
+   * Setting to `true` will limit animations to `transform` and `opacity` only.
    * @default false
    */
   compositeOnly: boolean
   /**
-   * The z-index used for elements during the animation
+   * The z-index used for elements during the animation.
    * @default 1
    */
   zIndex: number
   /**
-   * If `true`, child nodes will be included in the animation
-   * @default false
+   * If `true`, child nodes will be included in the animation.
+   * @default true
    */
   includeChildren: boolean
   /**
@@ -48,9 +50,39 @@ export interface ISharedElementOptions {
   /**
    * Setting this to `true` will disable any shared-elements on the
    * current page **unless** they are in the viewport.
-   * @default false
+   * @default true
    */
   restrictToViewport: boolean
+
+  /**
+   * Prevents the shared-element from entering the cloning phase unless one of the following is true:
+   *
+   * If `restrictToRoutes` is any array and the `path` of the upcoming route matches an item
+   * in that array.
+   *
+   * Or, if `restrictToRoutes` is a function and that function that returns true.
+   *
+   *
+   * ---
+   *
+   * Setting `restrictToRoutes` to `false` disables this behavior completely.
+   *
+   * ---
+   *
+   * @default
+   * false
+   *
+   * @example
+   * ```html
+   * <button
+   *  v-shared-element:id="{
+   *    restrictToRoutes(to, from, id) {
+   *      return id === to.params.productId
+   *    }
+   *  }">Click me</button>
+   * ```
+   */
+  restrictToRoutes: false | string[] | ((to: Route, from: Route, id: string) => boolean)
 }
 
 export const DEFAULT_OPTIONS: ISharedElementOptions = {
@@ -59,7 +91,8 @@ export const DEFAULT_OPTIONS: ISharedElementOptions = {
   endDuration: '150ms',
   zIndex: 1,
   compositeOnly: false,
-  includeChildren: false,
+  includeChildren: true,
   ignoreTransparency: ['img'],
-  restrictToViewport: false,
+  restrictToViewport: true,
+  restrictToRoutes: false
 }
