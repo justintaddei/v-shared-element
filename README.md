@@ -366,7 +366,7 @@ With `restrictToViewport` set to `true`, only those elements which are in the vi
     :key="product.id"
     v-shared-element:[`product-title-${product.id}`]="{
       restrictToRoutes(to, from, id) {
-        return id.includes(to.params.id) || id.includes(from.params.id)
+        return id.includes(to.params.id)
       }
     }"
   >
