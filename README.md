@@ -343,7 +343,7 @@ With `restrictToViewport` set to `true`, only those elements which are in the vi
 - *default:* `false`
   
   > **Recommendation:**   
-  > If you have many shared-elements on a single route (such as in a list) this option can significantly improve the performance of navigat.
+  > If you have many shared-elements on a single route (such as in a list) this option can significantly improve the performance of navigation.
 
   Prevents the given shared-element from entering the *cloning phase* unless it meets one of the following criteria:
 
