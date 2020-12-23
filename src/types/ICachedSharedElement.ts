@@ -1,4 +1,4 @@
-import { IllusoryElement } from 'illusory/types'
+import { IllusoryElement } from 'illusory'
 import { ISharedElementOptions } from '../options'
 
 /**

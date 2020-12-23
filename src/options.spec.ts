@@ -7,8 +7,9 @@ test('Has correct default options', () => {
     endDuration: '150ms',
     zIndex: 1,
     compositeOnly: false,
-    includeChildren: false,
+    includeChildren: true,
     ignoreTransparency: ['img'],
-    restrictToViewport: false,
+    restrictToViewport: true,
+    restrictToRoutes: false
   })
 })

@@ -1,3 +1,5 @@
+import { Route } from 'vue-router/types/router'
+
 /**
  * SharedElement Options
  */
@@ -51,6 +53,35 @@ export interface ISharedElementOptions {
    * @default false
    */
   restrictToViewport: boolean
+  /**
+   * Prevents the shared-element from entering the cloning phase unless one of the following is true:
+   *
+   * If `restrictToRoutes` is any array and the `path` of the upcoming route matches an item
+   * in that array.
+   *
+   * Or, if `restrictToRoutes` is a function and that function that returns true.
+   *
+   *
+   * ---
+   *
+   * Setting `restrictToRoutes` to `false` disables this behavior completely.
+   *
+   * ---
+   *
+   * @default
+   * false
+   *
+   * @example
+   * ```html
+   * <button
+   *  v-shared-element:id="{
+   *    restrictToRoutes(to, from, id) {
+   *      return id === to.params.productId
+   *    }
+   *  }">Click me</button>
+   * ```
+   */
+  restrictToRoutes: false | string[] | ((to: Route, from: Route, id: string) => boolean)
 }
 
 export const DEFAULT_OPTIONS: ISharedElementOptions = {
@@ -59,7 +90,8 @@ export const DEFAULT_OPTIONS: ISharedElementOptions = {
   endDuration: '150ms',
   zIndex: 1,
   compositeOnly: false,
-  includeChildren: false,
+  includeChildren: true,
   ignoreTransparency: ['img'],
-  restrictToViewport: false,
+  restrictToViewport: true,
+  restrictToRoutes: false
 }
