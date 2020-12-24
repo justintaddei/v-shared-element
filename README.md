@@ -6,22 +6,20 @@
 ![](https://img.shields.io/github/issues-raw/justintaddei/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/v/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/dt/v-shared-element.svg?style=flat)
-[![](https://img.shields.io/badge/Chat_on-Spectrum-blueviolet?logo=spectrum&style=flat)](https://spectrum.chat/v-shared-element?tab=chat)
 ![](https://img.shields.io/npm/l/v-shared-element.svg?style=flat)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
 ![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
 Declarative shared-element transitions between pages for [Vue.js](https://vuejs.org/).  
 *Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
 
+> #### v3.0.0 is out! 
+> **If you are upgrading from v2.x, please reference the [changelog](https://github.com/justintaddei/v-shared-element/blob/master/CHANGELOG.md) for the (short) list of breaking changes.**
+
 ### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
 > _Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
 
 [![gif of example page](https://github.com/justintaddei/v-shared-element/blob/assets/readme-demo.gif?raw=true)](https://justintaddei.github.io/v-shared-element/)
-
-#### Community chat <!-- omit in toc -->  
-[![](https://img.shields.io/badge/Chat_on-Spectrum-blueviolet?style=for-the-badge&logo=spectrum)](https://spectrum.chat/v-shared-element?tab=chat)
 
 ---
 
@@ -35,6 +33,8 @@ Declarative shared-element transitions between pages for [Vue.js](https://vuejs.
     - [Usage with `keep-alive`](#usage-with-keep-alive)
 - [Options](#options)
   - [Setting global options](#setting-global-options)
+    - [Vue.js + vue-router](#vuejs--vue-router-1)
+    - [Nuxt.js](#nuxtjs-1)
   - [Setting per-element options](#setting-per-element-options)
   - [Summary](#summary)
   - [Details](#details)
@@ -46,6 +46,7 @@ Declarative shared-element transitions between pages for [Vue.js](https://vuejs.
     - [includeChildren](#includechildren)
     - [ignoreTransparency](#ignoretransparency)
     - [restrictToViewport](#restricttoviewport)
+    - [restrictToRoutes](#restricttoroutes)
 - [Usage with page transitions](#usage-with-page-transitions)
 - [illusory](#illusory)
 - [Asking question and reporting bugs](#asking-question-and-reporting-bugs)
@@ -92,24 +93,16 @@ or
 
 #### Nuxt.js
 
-Create a file in `~/plugins` named `v-shared-element.client.js`
+Simply add it as a module in your `nuxt.config.js`
 ```js
-// ~/plugins/v-shared-element.client.js
+// nuxt.config.js
 
-import Vue from 'vue';
-import { SharedElementDirective, NuxtSharedElementRouteGuard } from 'v-shared-element';
-
-Vue.use(SharedElementDirective);
-
-export default NuxtSharedElementRouteGuard;
-```
-Then add it in your `nuxt.config.js`
-
-```js
 export default {
-  plugins: ['~/plugins/v-shared-element.client.js'],
+  modules: ['v-shared-element/nuxt'],
 }
 ```
+
+
 
 ## Usage
 
@@ -126,7 +119,7 @@ Add `v-shared-element:<namespace>` to an element to transform it into a shared-e
 Suppose you have a list of contacts and you want all the profile pictures to be shared-elements.  
 Use ["dynamic directive arguments"](https://vuejs.org/v2/guide/custom-directive.html#Dynamic-Directive-Arguments) to give a different namespace to each contact in the list (this is typically the same ID used for `v-for`'s `:key` prop).
 
-```vue
+```html
 <img
   :src="contact.profile"
   v-shared-element:[contact.id]
@@ -193,7 +186,7 @@ Import the mixin into to any components on your `keep-alive` routes that contain
 
 <br/>
 
-```vue
+```html
 <template>
     <div>
         <img
@@ -227,21 +220,33 @@ Options can be applied globally (when you register the plugin) and/or on each in
 
 ### Setting global options
 
+#### Vue.js + vue-router  
 ```js
-// In main.js or ~/plugins/v-shared-element.client.js
-
-...
+// main.js
 
 Vue.use(SharedElementDirective, {
   /* options */
 });
+```
 
-...
+or
+
+#### Nuxt.js  
+```js
+// nuxt.config.js
+
+export default {
+  modules: ['v-shared-element/nuxt'],
+
+  vSharedElement: {
+   /* options */
+  }
+}
 ```
 
 ### Setting per-element options
 
-```vue
+```html
 <img
   src="logo.png"
   v-shared-element:logo="{
@@ -259,9 +264,10 @@ Vue.use(SharedElementDirective, {
 | endDuration        | `string`              | `"150ms"` |
 | zIndex             | `number`              | `1`       |
 | compositeOnly      | `boolean`             | `false`   |
-| includeChildren    | `boolean`             | `false`   |
+| includeChildren    | `boolean`             | `true`    |
 | ignoreTransparency | `boolean \| string[]` | `["img"]` |
-| restrictToViewport | `boolean`             | `false`   |
+| restrictToViewport | `boolean`             | `true`    |
+| restrictToRoutes   | `boolean`             | `false`   |
 
 
 ### Details
@@ -305,7 +311,7 @@ Vue.use(SharedElementDirective, {
 
 #### includeChildren
 - **type:** `boolean`
-- *default:* `false`
+- *default:* `true`
 
   `v-shared-element` works by cloning each element (and its *computed styles*) then positioning the clones over the original element. By default, only the *root* node—the one that has the directive on it—will be cloned. Setting `includeChildren` to `true` will also clone the root node's *entire* subtree **(this is needed to clone text elements such as `h1`).**
 
@@ -327,9 +333,9 @@ Vue.use(SharedElementDirective, {
 
 #### restrictToViewport
 - **type:** `boolean`
-- *default:* `false`
+- *default:* `true`
   
-  By default, all shared-elements, with a matching element on the next page, will be activated when the route changes—regardless of their position in the document. With `restrictToViewport` set to `true`, only those elements which are in the viewport will be activated (those outside the viewport will behave as normal elements).
+  With `restrictToViewport` set to `true`, only those elements which are in the viewport will be activated (those outside the viewport will behave as normal elements). By setting this to `false`, every element on the current route will be considered as a candidate. If you have many shared-elements on a single route, disabling this will come with a large performance overhead.
 
   > **Recommended:**  
   > Setting this to `true` makes navigation feel smoother.  
@@ -338,6 +344,45 @@ Vue.use(SharedElementDirective, {
   **`restrictToViewport: true`**  
 
   ![](https://raw.githubusercontent.com/justintaddei/v-shared-element/assets/restrictToViewport.gif)
+
+#### restrictToRoutes
+- **type:** `false` | `string[]` | `(to: Route, from: Route, id: string) => boolean`
+- *default:* `false`
+
+  > **Recommendation:**   
+  > If you have many shared-elements on a single route (such as in a list) this option can significantly improve the performance of navigation.
+
+  Prevents a shared-element from entering the *cloning phase* unless it meets one of the following criteria:
+
+  **• If `restrictToRoutes` is an array** and the path of the upcoming route matches one of the items in the array.
+
+  *Example:*
+  ```html
+  <img
+    :src="userProfile"
+    v-shared-element:user-profile="{
+      restrictToRoutes: ['/user']
+    }"
+  />
+  ```
+
+  **• If `restrictToRoutes` is a function** and the function return `true`.
+
+  *Example:*  
+  ```html
+  <li
+    v-for="product in products"
+    :key="product.id"
+    v-shared-element:[`product-title-${product.id}`]="{
+      restrictToRoutes(to, from, id) {
+        return id.includes(to.params.id)
+      }
+    }"
+  >
+    {{ product.title }}
+  </li>
+  ```
+  > Built-in comparison functions for common use-cases (such as the example above) are likely to arrive in v3.1.0
 
 ## Usage with page transitions
 
