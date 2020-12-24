@@ -5,10 +5,10 @@
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "unpkg": "dist/iife/index.js",
-  "types": "types/",
+  "types": "dist/types/",
   "files": [
     "dist/**/*",
-    "types/**/*"
+    "nuxt/**/*"
   ],
   "scripts": {
     "test": "jest --no-cache",
