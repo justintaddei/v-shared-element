@@ -1,6 +1,11 @@
 # Changelog
 
-### 3.0.1  (December 23th, 2020)
+#### 3.0.2 (December 24th, 2020)
+
+**Other**
+- Removed `console.log`s that where erroneously left into the 3.0.1 release.
+
+## 3.0.1  (December 23th, 2020)
 
 > **See v3.0.0**
 

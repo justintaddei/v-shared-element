@@ -22,7 +22,6 @@ export function createRouteGuard(
 
     // Let's loop over all the candidates and create a record of them
     sharedElementCandidates.forEach((candidate, id) => {
-      console.count('total-elements')
       if (candidate.options.restrictToRoutes) {
         if (Array.isArray(candidate.options.restrictToRoutes)) {
           if (!candidate.options.restrictToRoutes.includes(from.path)) return
@@ -31,16 +30,11 @@ export function createRouteGuard(
         }
       }
 
-      console.count('elements-restricted-to-route')
-
       if (candidate.options.restrictToViewport) {
         const bcr = candidate.element.getBoundingClientRect()
-        console.count('elements-before-restrict-to-viewport')
         if (!withinViewport(bcr)) return
-        console.count('elements-restricted-to-viewport')
       }
 
-      console.count('elements-prepared-for-animation')
       const element = new IllusoryElement(candidate.element, {
         includeChildren: candidate.options.includeChildren,
         ignoreTransparency: candidate.options.ignoreTransparency,
