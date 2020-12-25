@@ -1,5 +1,10 @@
 # Changelog
 
+#### 3.0.3 (December 24th, 2020)
+
+**Bug fixes**
+- Fixed `restrictToRoutes` comparing against the `from` path instead of `to`.
+
 #### 3.0.2 (December 24th, 2020)
 
 **Other**
