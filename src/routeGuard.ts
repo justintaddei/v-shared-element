@@ -24,7 +24,7 @@ export function createRouteGuard(
     sharedElementCandidates.forEach((candidate, id) => {
       if (candidate.options.restrictToRoutes) {
         if (Array.isArray(candidate.options.restrictToRoutes)) {
-          if (!candidate.options.restrictToRoutes.includes(from.path)) return
+          if (!candidate.options.restrictToRoutes.includes(to.path)) return
         } else if (typeof candidate.options.restrictToRoutes === 'function') {
           if (!candidate.options.restrictToRoutes(to, from, id)) return
         }
