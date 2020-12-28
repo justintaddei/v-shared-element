@@ -1,4 +1,4 @@
-name: ci
+name: cd
 
 on:
   push:
@@ -39,6 +39,10 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci
 
-      - name: Run linter 👀
-        run: npm run lint
-
+      - name: Deploy to GitHub Pages
+        uses: Cecilapp/GitHub-Pages-deploy@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          email: arnaud@ligny.org
+          build_dir: dist

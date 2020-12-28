@@ -1,20 +1,23 @@
 <template>
   <div>
+    <IconSprite />
     <Nuxt />
   </div>
 </template>
 
-<style>
+<style lang="scss">
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  height: 100vh;
 }
 
 *,
@@ -22,34 +25,69 @@ html {
 *::after {
   box-sizing: border-box;
   margin: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+body {
+  background: var(--off-white);
+  min-height: 100vh;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
+.fade-in {
+  animation: fade-in 0.5s ease;
 }
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.markdown {
+  margin: 0 32px;
+  padding-bottom: 128px;
+
+  h2,
+  h3,
+  h4 {
+    margin: 32px 0;
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--light-gray);
+  }
+
+  code {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  p {
+    line-height: 1.5em;
+    margin: 24px 0;
+  }
+
+  ol {
+    margin: 24px 0;
+    padding: 0 0 0 48px;
+    li {
+      margin: 18px 0;
+      font-size: 1rem;
+    }
+  }
+
+  a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 2px solid currentColor;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 }
 </style>

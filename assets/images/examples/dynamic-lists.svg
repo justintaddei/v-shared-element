@@ -1,0 +1,36 @@
+<g id="item-1">
+    <circle cx="95" cy="39" r="12" fill="#4FC08D" />
+    <path d="M113 35H150.5" stroke="#35495E" stroke-width="3" />
+    <path d="M113 43H173" stroke="#35495E" stroke-width="3" />
+</g>
+<g id="item-2">
+    <circle cx="95" cy="75" r="12" fill="#F7BA1D" />
+    <path d="M113 71H150.5" stroke="#35495E" stroke-width="3" />
+    <path d="M113 79H173" stroke="#35495E" stroke-width="3" />
+</g>
+<g id="item-3">
+    <circle cx="95" cy="111" r="12" fill="#4FACC0" />
+    <path d="M113 107H150.5" stroke="#35495E" stroke-width="3" />
+    <path d="M113 115H173" stroke="#35495E" stroke-width="3" />
+</g>
+
+<style>
+    [id*="item-"] {
+        animation: item-fade-in 0.3s ease 0.3s both;
+    }
+
+    #item-2 {
+        animation-delay: 0.45s;
+    }
+
+    #item-3 {
+        animation-delay: 0.6s;
+    }
+
+    @keyframes item-fade-in {
+        from {
+            opacity: 0;
+            transform: translate(0, 30px);
+        }
+    }
+</style>

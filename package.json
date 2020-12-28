@@ -1,12 +1,13 @@
 {
-  "name": "v-shared-elememt-example",
+  "name": "v-shared-element-example",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "cross-env NUXT_PORT=8080 NUXT_HOST=0.0.0.0 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
+    "generate:dev": "cross-env DEPLOY_ENV=DEV nuxt generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "npm run lint:js"
   },
@@ -14,16 +15,23 @@
     "@nuxt/content": "^1.9.0",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
-    "v-shared-element": "^3.0.2"
+    "prism-themes": "^1.5.0",
+    "v-shared-element": "^3.0.3",
+    "v-wave": "^1.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/svg": "^0.1.12",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.2"
+    "node-sass": "^5.0.0",
+    "prettier": "^2.1.2",
+    "sass-loader": "^10.1.0",
+    "svg-inline-loader": "^0.8.2"
   }
 }

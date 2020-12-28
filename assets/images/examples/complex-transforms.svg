@@ -1,0 +1,48 @@
+<path id="triangle-1" d="M68.0005 118L92.0005 104.144V131.856L68.0005 118Z" fill="#4FACC0" />
+<g id="triangle-2">
+    <path d="M75.6234 78.7821L103.099 75.1648L92.4939 100.768L75.6234 78.7821Z" fill="#4FACC0" />
+    <path opacity="0.225" d="M75.6234 78.7821L103.099 75.1648L92.4939 100.768L75.6234 78.7821Z" fill="#F7BA1D" />
+</g>
+<g id="triangle-3">
+    <path d="M97.8142 45.3137L124.583 52.4863L104.987 72.0822L97.8142 45.3137Z" fill="#4FACC0" />
+    <path opacity="0.45" d="M97.8142 45.3137L124.583 52.4863L104.987 72.0822L97.8142 45.3137Z" fill="#F7BA1D" />
+</g>
+<g id="triangle-4">
+    <path d="M132.283 23.1229L154.269 39.9934L128.665 50.5987L132.283 23.1229Z" fill="#4FACC0" />
+    <path opacity="0.675" d="M132.283 23.1229L154.269 39.9934L128.665 50.5987L132.283 23.1229Z" fill="#F7BA1D" />
+</g>
+<path id="triangle-5" d="M171.5 16L185.357 40H157.644L171.5 16Z" fill="#F7BA1D" />
+
+<style>
+    [id*="triangle-"] {
+        animation: triangle-fade-in 0.3s ease 0.3s both;
+    }
+
+    #triangle-2 {
+        animation-delay: 0.35s;
+    }
+
+    #triangle-3 {
+        animation-delay: 0.4s;
+    }
+
+    #triangle-4 {
+        animation-delay: 0.45s;
+    }
+
+    #triangle-5 {
+        animation-delay: 0.5s;
+    }
+
+    #triangle-6 {
+        animation-delay: 0.55s;
+    }
+
+    @keyframes triangle-fade-in {
+        from {
+            opacity: 0;
+            transform: translate(-20px, 30px) rotate(-15deg);
+            transform-origin: center center;
+        }
+    }
+</style>
