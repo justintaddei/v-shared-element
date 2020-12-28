@@ -34,10 +34,13 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci
 
-      - name: Deploy to GitHub Pages
+      - name: Generate site 💪🏻
+        run: npm run generate
+
+      - name: Deploy to GitHub Pages 🚀
         uses: Cecilapp/GitHub-Pages-deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          email: arnaud@ligny.org
+          email: justin@justintaddei.com
           build_dir: dist
