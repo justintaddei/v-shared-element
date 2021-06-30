@@ -1,6 +1,5 @@
 import { IIllusoryElementOptions, illusory, IllusoryElement } from 'illusory'
-import { VNode } from 'vue'
-import { PluginObject } from 'vue/types/plugin'
+import { VNode, Plugin as PluginObject } from 'vue'
 import { sharedElementMixin } from './mixin'
 import { DEFAULT_OPTIONS, ISharedElementOptions } from './options'
 import { createRouteGuard } from './routeGuard'
@@ -104,14 +103,16 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
  * @example
  * Vue.use(SharedElementDirective, options)
  */
-const SharedElementDirective: PluginObject<Partial<ISharedElementOptions>> = {
-  install(Vue, options) {
-    Vue.prototype.$illusory = illusory
-    Vue.prototype.$createIllusoryElement = (el: HTMLElement | SVGElement, opts: IIllusoryElementOptions) =>
-      new IllusoryElement(el, opts)
+const SharedElementDirective: PluginObject = {
+  install(app, options) {
+    app.config.globalProperties.$illusory = illusory
+    app.config.globalProperties.$createIllusoryElement = (
+      el: HTMLElement | SVGElement,
+      opts: IIllusoryElementOptions
+    ) => new IllusoryElement(el, opts)
 
-    Vue.directive('shared-element', {
-      async inserted(activeElement, binding, vnode) {
+    app.directive('shared-element', {
+      async mounted(activeElement, binding, vnode) {
         const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
 
         // v-shared-element:id
@@ -143,11 +144,4 @@ export {
   NuxtSharedElementRouteGuard,
   sharedElementMixin,
   ISharedElementOptions
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $illusory: typeof illusory
-    $createIllusoryElement: (el: HTMLElement | SVGElement, opts?: Partial<IIllusoryElementOptions>) => IllusoryElement
-  }
 }
