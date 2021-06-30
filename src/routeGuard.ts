@@ -1,5 +1,5 @@
 import { IllusoryElement } from 'illusory'
-import { NavigationGuard, VueRouter } from 'vue-router/types/router'
+import { NavigationGuard, Router as VueRouter } from 'vue-router'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { hideElement } from './utils/hideElement'

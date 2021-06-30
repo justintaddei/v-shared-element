@@ -1,4 +1,4 @@
-import { Route } from 'vue-router/types/router'
+import { RouteLocationNormalized as Route } from 'vue-router'
 
 /**
  * SharedElement Options
