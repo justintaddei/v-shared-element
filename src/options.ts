@@ -1,4 +1,7 @@
-import { RouteLocationNormalized as Route } from 'vue-router'
+import { Route as Route3 } from 'vue-router-3/types/router'
+import { RouteLocationNormalized as Route4 } from 'vue-router-4'
+
+type Route = Route3 & Route4
 
 /**
  * SharedElement Options

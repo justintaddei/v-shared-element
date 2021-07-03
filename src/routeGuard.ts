@@ -1,9 +1,14 @@
 import { IllusoryElement } from 'illusory'
-import { NavigationGuard, Router as VueRouter } from 'vue-router'
+import { Vue } from 'vue-2/types/vue'
+import { NavigationGuard as NavigationGuard3, VueRouter as VueRouter3 } from 'vue-router-3/types/router'
+import { NavigationGuard as NavigationGuard4, NavigationGuardWithThis, Router as VueRouter4 } from 'vue-router-4'
 import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { hideElement } from './utils/hideElement'
 import { withinViewport } from './utils/withinViewport'
+
+type NavigationGuard = NavigationGuard3<Vue> & NavigationGuard4 & NavigationGuardWithThis<undefined>
+type VueRouter = VueRouter3 & VueRouter4
 
 export function createRouteGuard(
   sharedElementCandidates: Map<string, ISharedElementCandidate>,
