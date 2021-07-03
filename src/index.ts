@@ -1,5 +1,8 @@
 import { IIllusoryElementOptions, illusory, IllusoryElement } from 'illusory'
-import { VNode, Plugin as PluginObject } from 'vue'
+import { VNode as VNode2 } from 'vue-2/types/vnode';
+import { VueConstructor as Vue2 } from 'vue-2';
+import { PluginObject as PluginObject2 } from 'vue-2/types/plugin'
+import { VNode as VNode3, Plugin as PluginObject3, App } from 'vue-3'
 import { sharedElementMixin } from './mixin'
 import { DEFAULT_OPTIONS, ISharedElementOptions } from './options'
 import { createRouteGuard } from './routeGuard'
@@ -7,6 +10,9 @@ import { ICachedSharedElement } from './types/ICachedSharedElement'
 import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { hideElement } from './utils/hideElement'
 import { nextFrame } from './utils/nextFrame'
+
+type PluginObject = PluginObject2<Partial<ISharedElementOptions>> & PluginObject3;
+type VNode = VNode2 & VNode3;
 
 /**
  * Map of all elements on the current page that
@@ -98,40 +104,62 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
   await finished
 }
 
+const $createIllusoryElement = (
+  el: HTMLElement | SVGElement,
+  opts: IIllusoryElementOptions
+) => new IllusoryElement(el, opts)
+
+const insertedMounted = (options: Partial<ISharedElementOptions> = {}) => async (activeElement, binding, vnode) => {
+  const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
+
+  // v-shared-element:id
+  const id = binding.arg
+  if (!id)
+    throw new Error(
+      `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`
+    )
+
+  if (binding.value?.$keepSharedElementAlive)
+    binding.value.$keepSharedElementAlive(() => {
+      trigger(activeElement, vnode, combinedOptions, id)
+    })
+
+  trigger(activeElement, vnode, combinedOptions, id)
+}
+
+const isVue3 = (app: Vue2 | App): app is App => 'config' in app && 'globalProperties' in app.config
+
 /**
  * Vue.js plugin
  * @example
  * Vue.use(SharedElementDirective, options)
  */
 const SharedElementDirective: PluginObject = {
-  install(app, options) {
+  install(app: Vue2 | App, options?: Partial<ISharedElementOptions>) {
+    // Vue 2
+    if (!isVue3(app)) {
+      app.prototype.$illusory = illusory
+      app.prototype.$createIllusoryElement = $createIllusoryElement
+
+      app.directive('shared-element', {
+        inserted: insertedMounted(options),
+      })
+      return
+    }
+
+    // Vue 3
     app.config.globalProperties.$illusory = illusory
-    app.config.globalProperties.$createIllusoryElement = (
-      el: HTMLElement | SVGElement,
-      opts: IIllusoryElementOptions
-    ) => new IllusoryElement(el, opts)
+    app.config.globalProperties.$createIllusoryElement = $createIllusoryElement
 
     app.directive('shared-element', {
-      async mounted(activeElement, binding, vnode) {
-        const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
-
-        // v-shared-element:id
-        const id = binding.arg
-        if (!id)
-          throw new Error(
-            `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`
-          )
-
-        if (binding.value?.$keepSharedElementAlive)
-          binding.value.$keepSharedElementAlive(() => {
-            trigger(activeElement, vnode, combinedOptions, id)
-          })
-
-        trigger(activeElement, vnode, combinedOptions, id)
-      }
+      mounted: insertedMounted(options),
     })
   }
 }
+
+const createSharedElementDirective = (options: Partial<ISharedElementOptions> = {}): PluginObject3 => ({
+  install: (app, options?: any[]) => SharedElementDirective.install(app, options),
+})
 
 const { NuxtSharedElementRouteGuard, SharedElementRouteGuard } = createRouteGuard(
   sharedElementCandidates,
@@ -139,6 +167,7 @@ const { NuxtSharedElementRouteGuard, SharedElementRouteGuard } = createRouteGuar
 )
 
 export {
+  createSharedElementDirective,
   SharedElementDirective,
   SharedElementRouteGuard,
   NuxtSharedElementRouteGuard,
