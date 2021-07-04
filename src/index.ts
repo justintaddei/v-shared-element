@@ -1,6 +1,6 @@
 import { IIllusoryElementOptions, illusory, IllusoryElement } from 'illusory'
-import { VNode as VNode2 } from 'vue-2/types/vnode';
-import { VueConstructor as Vue2 } from 'vue-2';
+import { VNode as VNode2 } from 'vue-2/types/vnode'
+import { VueConstructor as Vue2 } from 'vue-2'
 import { PluginObject as PluginObject2 } from 'vue-2/types/plugin'
 import { VNode as VNode3, Plugin as PluginObject3, App } from 'vue-3'
 import { sharedElementMixin } from './mixin'
@@ -11,8 +11,8 @@ import { ISharedElementCandidate } from './types/ISharedElementCandidate'
 import { hideElement } from './utils/hideElement'
 import { nextFrame } from './utils/nextFrame'
 
-type PluginObject = PluginObject2<Partial<ISharedElementOptions>> & PluginObject3;
-type VNode = VNode2 & VNode3;
+type PluginObject = PluginObject2<Partial<ISharedElementOptions>> & PluginObject3
+type VNode = VNode2 & VNode3
 
 /**
  * Map of all elements on the current page that
@@ -104,10 +104,8 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
   await finished
 }
 
-const $createIllusoryElement = (
-  el: HTMLElement | SVGElement,
-  opts: IIllusoryElementOptions
-) => new IllusoryElement(el, opts)
+const $createIllusoryElement = (el: HTMLElement | SVGElement, opts: IIllusoryElementOptions) =>
+  new IllusoryElement(el, opts)
 
 const insertedMounted = (options: Partial<ISharedElementOptions> = {}) => async (activeElement, binding, vnode) => {
   const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
@@ -142,7 +140,7 @@ const SharedElementDirective: PluginObject = {
       app.prototype.$createIllusoryElement = $createIllusoryElement
 
       app.directive('shared-element', {
-        inserted: insertedMounted(options),
+        inserted: insertedMounted(options)
       })
       return
     }
@@ -152,13 +150,13 @@ const SharedElementDirective: PluginObject = {
     app.config.globalProperties.$createIllusoryElement = $createIllusoryElement
 
     app.directive('shared-element', {
-      mounted: insertedMounted(options),
+      mounted: insertedMounted(options)
     })
   }
 }
 
 const createSharedElementDirective = (options: Partial<ISharedElementOptions> = {}): PluginObject3 => ({
-  install: (app, options?: any[]) => SharedElementDirective.install(app, options),
+  install: (app, _options?: any[]) => SharedElementDirective.install(app, options)
 })
 
 const { NuxtSharedElementRouteGuard, SharedElementRouteGuard } = createRouteGuard(

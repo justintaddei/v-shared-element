@@ -13,6 +13,9 @@
 Declarative shared-element transitions between pages for [Vue.js](https://vuejs.org/).  
 *Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
 
+> #### v3.1.0 is out
+> **Vue 3 is supported now**
+
 > #### v3.0.0 is out! 
 > **If you are upgrading from v2.x, please reference the [changelog](https://github.com/justintaddei/v-shared-element/blob/master/CHANGELOG.md) for the (short) list of breaking changes.**
 
@@ -26,14 +29,16 @@ Declarative shared-element transitions between pages for [Vue.js](https://vuejs.
 **Index**
 - [Install](#install)
   - [Register the plugin](#register-the-plugin)
-    - [Vue.js + vue-router](#vuejs--vue-router)
+    - [Vue.js + vue-router (Vue 2)](#vuejs--vue-router-vue-2)
+    - [Vue.js + vue-router (Vue 3)](#vuejs--vue-router-vue-3)
     - [Nuxt.js](#nuxtjs)
 - [Usage](#usage)
     - [Usage with `v-for`](#usage-with-v-for)
     - [Usage with `keep-alive`](#usage-with-keep-alive)
 - [Options](#options)
   - [Setting global options](#setting-global-options)
-    - [Vue.js + vue-router](#vuejs--vue-router-1)
+    - [Vue.js + vue-router (Vue 2)](#vuejs--vue-router-vue-2-1)
+    - [Vue.js + vue-router (Vue 3)](#vuejs--vue-router-vue-3-1)
     - [Nuxt.js](#nuxtjs-1)
   - [Setting per-element options](#setting-per-element-options)
   - [Summary](#summary)
@@ -72,7 +77,7 @@ or
 
 ### Register the plugin
 
-#### Vue.js + vue-router  
+#### Vue.js + vue-router (Vue 2)
 
 ```js
 //main.js
@@ -80,10 +85,34 @@ or
 import Vue from 'vue'
 import {
     SharedElementRouteGuard,
-    SharedElementDirective
+    SharedElementDirective,
+    createSharedElementDirective
 } from 'v-shared-element'
 
 Vue.use(SharedElementDirective)
+
+const router = new VueRouter({ ... })
+
+router.beforeEach(SharedElementRouteGuard)
+```
+or  
+
+#### Vue.js + vue-router (Vue 3)
+
+```ts
+//main.ts
+
+import { createApp } from 'vue'
+import {
+    createSharedElementDirective,
+    SharedElementRouteGuard,
+    SharedElementDirective
+} from 'v-shared-element'
+
+const app = createApp(App)
+
+app.use(SharedElementDirective)
+// or app.use(createSharedElementDirective())
 
 const router = new VueRouter({ ... })
 
@@ -220,13 +249,30 @@ Options can be applied globally (when you register the plugin) and/or on each in
 
 ### Setting global options
 
-#### Vue.js + vue-router  
+#### Vue.js + vue-router (Vue 2)
 ```js
 // main.js
 
 Vue.use(SharedElementDirective, {
   /* options */
 });
+```
+
+or
+
+#### Vue.js + vue-router (Vue 3)
+```ts
+// main.ts
+
+app.use(SharedElementDirective, {
+  /* options */
+});
+
+// or
+
+app.use(createSharedElementDirective({
+  /* options */
+}))
 ```
 
 or

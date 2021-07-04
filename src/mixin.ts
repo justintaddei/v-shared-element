@@ -2,7 +2,8 @@ import { ThisTypedComponentOptionsWithArrayProps } from 'vue-2/types/options'
 import { Vue } from 'vue-2/types/vue'
 import { ComponentOptions as ComponentOptions3 } from 'vue-3'
 
-type ComponentOptions = ThisTypedComponentOptionsWithArrayProps<Vue, unknown, unknown, unknown, never> & ComponentOptions3
+type ComponentOptions = ThisTypedComponentOptionsWithArrayProps<Vue, unknown, unknown, unknown, never> &
+  ComponentOptions3
 
 type TriggerFunction = () => void
 
