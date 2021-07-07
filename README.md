@@ -3,12 +3,12 @@
 </p>
 <h1 align="center">v-shared-element</h1>
 
+[![checks](https://github.com/justintaddei/v-shared-element/actions/workflows/tests.yml/badge.svg)](https://github.com/justintaddei/v-shared-element/actions/workflows/tests.yml)
 ![](https://img.shields.io/github/issues-raw/justintaddei/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/v/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/dt/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/npm/l/v-shared-element.svg?style=flat)
 ![](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)
-![](https://img.shields.io/badge/status-awesome-red.svg?style=flat)
 
 Declarative shared-element transitions between pages for [Vue.js](https://vuejs.org/).  
 *Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
