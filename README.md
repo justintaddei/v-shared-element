@@ -13,11 +13,9 @@
 Declarative shared-element transitions between pages for [Vue.js](https://vuejs.org/).  
 *Uses [illusory](https://npmjs.com/package/illusory) under the hood.*
 
-> #### v3.1.0 is out
-> **Vue 3 is supported now**
-
-> #### v3.0.0 is out! 
-> **If you are upgrading from v2.x, please reference the [changelog](https://github.com/justintaddei/v-shared-element/blob/master/CHANGELOG.md) for the (short) list of breaking changes.**
+> #### v3.1.0 released!
+> **Vue 3 is now supported with Vue 2 backwords compatibility**  
+> _Special thanks to [@domgew](https://github.com/domgew) for [#26](https://github.com/justintaddei/v-shared-element/pull/26)_
 
 ### **[Example page](https://justintaddei.github.io/v-shared-element/)**  <!-- omit in toc -->
 > _Source code for the example can be found on the [`example` branch](https://github.com/justintaddei/v-shared-element/tree/example)._
