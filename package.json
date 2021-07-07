@@ -8,8 +8,7 @@
     "start": "nuxt start",
     "generate": "cross-env DEPLOY_ENV=GH_PAGES nuxt generate",
     "generate:dev": "cross-env DEPLOY_ENV=DEV nuxt generate",
-    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint": "npm run lint:js"
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
     "@nuxt/content": "^1.9.0",
