@@ -15,7 +15,7 @@
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "prism-themes": "^1.5.0",
-    "v-shared-element": "^3.0.3",
+    "v-shared-element": "^3.1.0",
     "v-wave": "^1.1.0"
   },
   "devDependencies": {
