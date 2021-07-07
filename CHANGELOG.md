@@ -3,7 +3,7 @@
 #### 3.1.0 (July 5th, 2021)
 
 **Features**
-- Added support for Vue 3
+- Added support for Vue 3 (#26)
 
 #### 3.0.3 (December 24th, 2020)
 
