@@ -51,7 +51,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "husky": "^7.0.1",
     "@types/jest": "^26.0.24",
     "jest": "^26.0.1",
