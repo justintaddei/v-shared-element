@@ -52,7 +52,7 @@ Declarative shared-element transitions between pages for [Vue.js](https://vuejs.
     - [restrictToRoutes](#restricttoroutes)
 - [Usage with page transitions](#usage-with-page-transitions)
 - [illusory](#illusory)
-- [Asking question and reporting bugs](#asking-question-and-reporting-bugs)
+- [Asking questions and reporting bugs](#asking-questions-and-reporting-bugs)
 - [How to contributing](#how-to-contributing)
   - [Development setup](#development-setup)
   - [Common NPM Scripts](#common-npm-scripts)
@@ -204,7 +204,7 @@ To fix this, use `sharedElementMixin` on routes that are "kept alive".
 
 ##### Using sharedElementMixin <!-- omit in toc -->
 
-Import the mixin into to any components on your `keep-alive` routes that contain *shared-elements*. Then, in those components, pass `$keepSharedElementAlive`—a method provided by the mixin—as an option to every `v-shared-element` directive on that route. Everything should now work as you would expect.
+Import the mixin into any components on your `keep-alive` routes that contain *shared-elements*. Then, in those components, pass `$keepSharedElementAlive`—a method provided by the mixin—as an option to every `v-shared-element` directive on that route. Everything should now work as you would expect.
 
 > Note: This is **only** necessary for routes that are kept alive. For example, if `/home` is kept alive but `/about` is not, then only `/home` needs to import the mixin.
 
@@ -334,7 +334,7 @@ export default {
 - **type:** `string | false`
 - *default:* `"100ms"` 
 
-  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the duration of the "fade out" stage of the animation to blend the duplicated element with the real one. Set to `false` or `"0s"` to disable the fade out effect.
+  A CSS [time](https://developer.mozilla.org/en-US/docs/Web/CSS/time) denoting the duration of the "fade out" stage of the animation to blend the duplicated element with the real one. Set to `false` or `"0s"` to disable the fade-out effect.
   > **Note:** This option only applies if `includeChildren` is `false`.
 
 #### zIndex
@@ -410,7 +410,7 @@ export default {
   />
   ```
 
-  **• If `restrictToRoutes` is a function** and the function return `true`.
+  **• If `restrictToRoutes` is a function** and the function returns `true`.
 
   *Example:*  
   ```html
@@ -554,7 +554,7 @@ For example:
 </script>
 ```
 
-## Asking question and reporting bugs
+## Asking questions and reporting bugs
 
 If you're experiencing any problems, or have general questions about the plugin, feel free open a new issue (but search through the existing ones first, as your question may have been answered already).
 
