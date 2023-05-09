@@ -20,7 +20,8 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "release": "npm run lint && npm run format && npm run test && standard-version"
   },
   "husky": {
     "hooks": {
@@ -60,6 +61,7 @@
     "prettier": "^2.0.5",
     "rollup": "^3.21.5",
     "rollup-plugin-typescript2": "^0.34.1",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.1.0",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
