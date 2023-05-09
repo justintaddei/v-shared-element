@@ -1,6 +1,6 @@
 import typescript from 'rollup-plugin-typescript2'
-import pkg from './package.json'
-import { uglify } from 'rollup-plugin-uglify'
+import pkg from './package.json' assert { type: 'json' }
+import terser from '@rollup/plugin-terser'
 import resolve from '@rollup/plugin-node-resolve'
 
 export default [
@@ -12,18 +12,18 @@ export default [
         useTsconfigDeclarationDir: true,
         tsconfigOverride: {
           compilerOptions: {
-            declarationDir: pkg.types,
-          },
-        },
-      }),
+            declarationDir: pkg.types
+          }
+        }
+      })
     ],
 
     output: [
       {
         file: pkg.module,
-        format: 'es',
-      },
-    ],
+        format: 'es'
+      }
+    ]
   },
   {
     input: './src/index.ts',
@@ -33,18 +33,18 @@ export default [
         tsconfigOverride: {
           compilerOptions: {
             target: 'es5',
-            declaration: false,
-          },
-        },
-      }),
+            declaration: false
+          }
+        }
+      })
     ],
 
     output: [
       {
         file: pkg.main,
-        format: 'cjs',
-      },
-    ],
+        format: 'cjs'
+      }
+    ]
   },
   {
     input: './src/index.ts',
@@ -54,19 +54,19 @@ export default [
         tsconfigOverride: {
           compilerOptions: {
             target: 'es5',
-            declaration: false,
-          },
-        },
+            declaration: false
+          }
+        }
       }),
-      uglify({
-        sourcemap: false,
+      terser({
+        sourceMap: true,
         output: {
-          comments: 'all',
-        },
+          comments: 'all'
+        }
       }),
       resolve({
-        mainFields: ['unpkg'],
-      }),
+        mainFields: ['unpkg']
+      })
     ],
 
     output: [
@@ -76,9 +76,9 @@ export default [
         name: 'window',
         extend: true,
         globals: {
-          illusory: 'window',
-        },
-      },
-    ],
-  },
+          illusory: 'window'
+        }
+      }
+    ]
+  }
 ]
