@@ -107,23 +107,25 @@ async function trigger(activeElement: HTMLElement, vnode: VNode, combinedOptions
 const $createIllusoryElement = (el: HTMLElement | SVGElement, opts: IIllusoryElementOptions) =>
   new IllusoryElement(el, opts)
 
-const insertedMounted = (options: Partial<ISharedElementOptions> = {}) => async (activeElement, binding, vnode) => {
-  const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
+const insertedMounted =
+  (options: Partial<ISharedElementOptions> = {}) =>
+  async (activeElement, binding, vnode) => {
+    const combinedOptions: ISharedElementOptions = { ...DEFAULT_OPTIONS, ...options, ...binding.value }
 
-  // v-shared-element:id
-  const id = binding.arg
-  if (!id)
-    throw new Error(
-      `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`
-    )
+    // v-shared-element:id
+    const id = binding.arg
+    if (!id)
+      throw new Error(
+        `Missing ID on a v-shared-element. For usage see: https://github.com/justintaddei/v-shared-element#readme`
+      )
 
-  if (binding.value?.$keepSharedElementAlive)
-    binding.value.$keepSharedElementAlive(() => {
-      trigger(activeElement, vnode, combinedOptions, id)
-    })
+    if (binding.value?.$keepSharedElementAlive)
+      binding.value.$keepSharedElementAlive(() => {
+        trigger(activeElement, vnode, combinedOptions, id)
+      })
 
-  trigger(activeElement, vnode, combinedOptions, id)
-}
+    trigger(activeElement, vnode, combinedOptions, id)
+  }
 
 const isVue3 = (app: Vue2 | App): app is App => 'config' in app && 'globalProperties' in app.config
 
